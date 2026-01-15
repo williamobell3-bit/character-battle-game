@@ -4639,6 +4639,12 @@
                 return;
             }
             
+            // Check if this is a custom tournament battle
+            if (battle.isTournamentBattle) {
+                handleCustomTournamentBattleEnd(playerWon);
+                return;
+            }
+            
             // Automatically hide battle screen and show results
             document.getElementById('battleScreen').classList.remove('active');
             
@@ -6431,39 +6437,293 @@
                 return;
             }
             
-            // Show round start
+            // Find player
+            const player = activePlayers.find(p => p.isPlayer);
+            
+            if (!player) {
+                // Player was eliminated, just simulate the rest
+                simulateRoundAndShowResults();
+                return;
+            }
+            
+            // Show waiting room
+            showWaitingRoom(activePlayers, player);
+        }
+
+        function showWaitingRoom(activePlayers, player) {
+            const tournament = gameState.customTournament;
             const content = document.getElementById('battleModeContent');
+            
+            // Simulate other matches happening
+            const otherPlayers = activePlayers.filter(p => !p.isPlayer);
+            const matchups = [];
+            
+            // Create random matchups for display
+            for (let i = 0; i < Math.min(5, Math.floor(otherPlayers.length / 2)); i++) {
+                const p1 = otherPlayers[i * 2];
+                const p2 = otherPlayers[i * 2 + 1] || otherPlayers[0];
+                matchups.push({ p1, p2 });
+            }
+            
             content.innerHTML = `
-                <div style="text-align: center; padding: 40px;">
-                    <h2 style="font-size: 3em; margin-bottom: 20px;">Round ${tournament.round}</h2>
-                    <p style="font-size: 1.5em; margin-bottom: 30px;">
-                        ${activePlayers.length} fighters remain!
-                    </p>
-                    <div style="font-size: 5em; margin: 40px 0;">⚔️</div>
-                    <p style="font-size: 1.2em; opacity: 0.9;">
-                        Battle in progress...
-                    </p>
+                <div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+                    <h2 style="text-align: center; margin-bottom: 20px; font-size: 2.5em;">Round ${tournament.round} - Waiting Room</h2>
+                    
+                    <div style="background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6)); border: 3px solid #FFD700; border-radius: 20px; padding: 30px; margin-bottom: 30px; text-align: center;">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🏟️</div>
+                        <h3 style="color: #FFD700; font-size: 1.8em; margin-bottom: 15px;">Tournament Arena</h3>
+                        <p style="font-size: 1.3em; margin-bottom: 10px;">
+                            <strong>${activePlayers.length}</strong> fighters remaining
+                        </p>
+                        <p style="opacity: 0.9;">
+                            ${player.icon} <strong>${player.name}</strong> - Ready to fight!
+                        </p>
+                    </div>
+
+                    <!-- Other Matches in Progress -->
+                    <div style="background: rgba(0,0,0,0.6); border-radius: 15px; padding: 25px; margin-bottom: 30px;">
+                        <h3 style="text-align: center; margin-bottom: 20px; color: #87CEEB;">⚔️ Other Matches in Progress</h3>
+                        <div style="display: grid; gap: 15px;">
+                            ${matchups.map(m => `
+                                <div style="background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="flex: 1; text-align: center;">
+                                        <div style="font-size: 2em;">${m.p1.icon}</div>
+                                        <div style="font-size: 0.9em; margin-top: 5px;">${m.p1.name}</div>
+                                    </div>
+                                    <div style="font-size: 1.5em; opacity: 0.6;">VS</div>
+                                    <div style="flex: 1; text-align: center;">
+                                        <div style="font-size: 2em;">${m.p2.icon}</div>
+                                        <div style="font-size: 0.9em; margin-top: 5px;">${m.p2.name}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <p style="text-align: center; margin-top: 20px; opacity: 0.7; font-style: italic;">
+                            Battles are being fought all around you...
+                        </p>
+                    </div>
+
+                    <!-- Your Match -->
+                    <div style="background: linear-gradient(135deg, rgba(255,69,0,0.4), rgba(255,69,0,0.2)); border: 3px solid #FF4500; border-radius: 15px; padding: 30px; text-align: center;">
+                        <h3 style="color: #FF4500; font-size: 1.8em; margin-bottom: 20px;">🥊 Your Match Is Ready!</h3>
+                        <p style="font-size: 1.2em; margin-bottom: 25px;">
+                            Step into the arena and prove your worth!
+                        </p>
+                        <button class="battle-btn" onclick="startCustomTournamentBattle()" 
+                                style="font-size: 1.5em; padding: 20px 60px; background: linear-gradient(135deg, #FF4500, #FF6347); border: 3px solid #FFD700; box-shadow: 0 10px 30px rgba(255,69,0,0.5);">
+                            ⚔️ Enter Arena & Fight!
+                        </button>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px; opacity: 0.7;">
+                        <p>Win your match to advance to the next round!</p>
+                    </div>
                 </div>
             `;
+        }
+
+        function startCustomTournamentBattle() {
+            const tournament = gameState.customTournament;
+            const activePlayers = tournament.participants.filter(p => !p.eliminated);
+            const player = activePlayers.find(p => p.isPlayer);
             
-            // Simulate battles after 1.5 seconds
-            setTimeout(() => {
-                // Each player gets a score based on power + randomness
-                activePlayers.forEach(p => {
+            // Find a random opponent for the player
+            const opponents = activePlayers.filter(p => !p.isPlayer);
+            const opponent = opponents[Math.floor(Math.random() * opponents.length)];
+            
+            // Store tournament state
+            tournament.currentOpponent = opponent;
+            tournament.waitingForBattle = true;
+            
+            // Create character objects for the battle
+            const playerChar = {
+                id: player.id || 'tournament-player',
+                name: player.name,
+                icon: player.icon,
+                power: player.power,
+                health: player.power,
+                maxHealth: player.power,
+                currentHealth: player.power,
+                level: 1,
+                rarity: 'Epic',
+                packName: 'Tournament'
+            };
+            
+            const opponentChar = {
+                id: 'tournament-opponent',
+                name: opponent.name,
+                icon: opponent.icon,
+                power: opponent.power,
+                health: opponent.power,
+                maxHealth: opponent.power,
+                currentHealth: opponent.power,
+                level: 1,
+                rarity: 'Epic',
+                packName: 'Tournament'
+            };
+            
+            // Generate powers for both fighters
+            playerChar.powers = generatePowers(playerChar);
+            opponentChar.powers = generatePowers(opponentChar);
+            
+            // Randomly decide who goes first
+            const playerGoesFirst = Math.random() < 0.5;
+            
+            // Set up battle state
+            gameState.currentBattle = {
+                player: playerChar,
+                opponent: opponentChar,
+                turn: playerGoesFirst ? 'player' : 'opponent',
+                round: 1,
+                log: [],
+                isTournamentBattle: true
+            };
+            
+            // Show battle screen
+            document.getElementById('battleScreen').classList.add('active');
+            
+            // Set world background
+            const worldClass = getWorldClass(gameState.currentWorld);
+            const battleBg = document.getElementById('battleBackground');
+            battleBg.className = worldClass;
+            
+            // Update UI
+            document.getElementById('battleWorldName').textContent = `Tournament Round ${tournament.round}`;
+            updateBattleUI();
+            
+            // If opponent goes first, announce it and start their turn
+            if (!playerGoesFirst) {
+                addBattleLog(`${opponentChar.name} goes first!`, 'normal');
+                setTimeout(() => {
+                    opponentTurn();
+                }, 1000);
+            } else {
+                addBattleLog(`You go first!`, 'normal');
+            }
+        }
+
+        function onCustomTournamentBattleEnd(playerWon) {
+            const tournament = gameState.customTournament;
+            const activePlayers = tournament.participants.filter(p => !p.eliminated);
+            const player = activePlayers.find(p => p.isPlayer);
+            
+            // Calculate scores for all players
+            activePlayers.forEach(p => {
+                if (p.isPlayer) {
+                    // Player's score based on whether they won
+                    p.score = playerWon ? p.power * 1.2 : p.power * 0.5;
+                } else {
+                    // AI scores based on power + randomness
                     p.score = p.power * (0.8 + Math.random() * 0.4);
-                });
-                
-                // Sort by score
-                activePlayers.sort((a, b) => b.score - a.score);
-                
-                // Eliminate bottom X%
-                const eliminateCount = Math.max(1, Math.floor(activePlayers.length * tournament.eliminationRate));
-                const eliminated = activePlayers.slice(-eliminateCount);
-                
-                eliminated.forEach(p => p.eliminated = true);
-                
-                showCustomTournamentResults(activePlayers, eliminated);
-            }, 1500);
+                }
+            });
+            
+            // Sort by score
+            activePlayers.sort((a, b) => b.score - a.score);
+            
+            // Eliminate bottom X%
+            const eliminateCount = Math.max(1, Math.floor(activePlayers.length * tournament.eliminationRate));
+            const eliminated = activePlayers.slice(-eliminateCount);
+            
+            eliminated.forEach(p => p.eliminated = true);
+            
+            // Show battle mode content again
+            document.getElementById('battleModeContent').style.display = 'block';
+            
+            // Show results
+            showCustomTournamentResults(activePlayers, eliminated);
+        }
+
+        function handleCustomTournamentBattleEnd(playerWon) {
+            const battle = gameState.currentBattle;
+            
+            // Hide battle screen
+            document.getElementById('battleScreen').classList.remove('active');
+            
+            // Create and show results page
+            const resultsPage = document.createElement('div');
+            resultsPage.id = 'battleResultsPage';
+            resultsPage.className = 'battle-screen active';
+            
+            if (playerWon) {
+                resultsPage.innerHTML = `
+                    <div class="battle-results-container">
+                        <div class="battle-result">
+                            <div class="result-icon">🏆</div>
+                            <div class="result-title" style="color: #51cf66;">ROUND VICTORY!</div>
+                            <div style="font-size: 1.2em; margin: 20px 0;">
+                                You defeated <strong>${battle.opponent.name}</strong> in the arena!
+                            </div>
+                            <div class="result-rewards">
+                                <h3>Match Complete</h3>
+                                <p style="font-size: 1.2em; margin: 15px 0;">
+                                    You earned a high score this round!
+                                </p>
+                                <p style="opacity: 0.8;">
+                                    Checking tournament standings...
+                                </p>
+                            </div>
+                            <button class="continue-btn" onclick="finishCustomTournamentBattle(true)">View Round Results</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultsPage.innerHTML = `
+                    <div class="battle-results-container">
+                        <div class="battle-result">
+                            <div class="result-icon">💀</div>
+                            <div class="result-title" style="color: #ff6b6b;">MATCH LOST</div>
+                            <div style="font-size: 1.2em; margin: 20px 0;">
+                                <strong>${battle.opponent.name}</strong> defeated you in battle!
+                            </div>
+                            <div class="result-rewards">
+                                <p style="font-size: 1.1em; margin: 15px 0;">
+                                    Your score for this round will be lower.
+                                </p>
+                                <p style="opacity: 0.8;">
+                                    Hopefully you survive elimination...
+                                </p>
+                            </div>
+                            <button class="continue-btn" onclick="finishCustomTournamentBattle(false)">View Round Results</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.body.appendChild(resultsPage);
+        }
+
+        function finishCustomTournamentBattle(playerWon) {
+            // Remove results page
+            const resultsPage = document.getElementById('battleResultsPage');
+            if (resultsPage) {
+                resultsPage.remove();
+            }
+            
+            // Process tournament results
+            onCustomTournamentBattleEnd(playerWon);
+        }
+
+        function simulateRoundAndShowResults() {
+            // Player is eliminated, just simulate
+            const tournament = gameState.customTournament;
+            const activePlayers = tournament.participants.filter(p => !p.eliminated);
+            
+            // Simulate all battles
+            activePlayers.forEach(p => {
+                p.score = p.power * (0.8 + Math.random() * 0.4);
+            });
+            
+            // Sort by score
+            activePlayers.sort((a, b) => b.score - a.score);
+            
+            // Eliminate bottom X%
+            const eliminateCount = Math.max(1, Math.floor(activePlayers.length * tournament.eliminationRate));
+            const eliminated = activePlayers.slice(-eliminateCount);
+            
+            eliminated.forEach(p => p.eliminated = true);
+            
+            showCustomTournamentResults(activePlayers, eliminated);
         }
 
         function showCustomTournamentResults(activePlayers, eliminated) {
