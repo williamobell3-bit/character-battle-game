@@ -1822,6 +1822,126 @@
             25% { transform: translateX(-10px) rotate(-5deg); }
             75% { transform: translateX(10px) rotate(5deg); }
         }
+
+        /* Custom Confirmation Modal */
+        .confirm-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .confirm-modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .confirm-modal {
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.98), rgba(30, 30, 50, 0.98));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            transform: scale(0.7);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .confirm-modal-overlay.active .confirm-modal {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .confirm-modal-icon {
+            font-size: 4em;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: icon-bounce 0.6s ease-out;
+        }
+
+        @keyframes icon-bounce {
+            0% { transform: scale(0) rotate(-180deg); }
+            60% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+
+        .confirm-modal-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .confirm-modal-message {
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .confirm-modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .confirm-btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .confirm-btn-cancel {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .confirm-btn-cancel:hover {
+            background: linear-gradient(135deg, #5a6268, #4e555b);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .confirm-btn-confirm {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .confirm-btn-confirm:hover {
+            background: linear-gradient(135deg, #c82333, #bd2130);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .confirm-btn-confirm.success {
+            background: linear-gradient(135deg, #28a745, #218838);
+        }
+
+        .confirm-btn-confirm.success:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -1830,6 +1950,19 @@
     
     <!-- Confetti Container -->
     <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- Custom Confirmation Modal -->
+    <div class="confirm-modal-overlay" id="confirmModalOverlay">
+        <div class="confirm-modal">
+            <div class="confirm-modal-icon" id="confirmModalIcon">⚠️</div>
+            <div class="confirm-modal-title" id="confirmModalTitle">Confirm Action</div>
+            <div class="confirm-modal-message" id="confirmModalMessage">Are you sure?</div>
+            <div class="confirm-modal-buttons">
+                <button class="confirm-btn confirm-btn-cancel" id="confirmCancelBtn">Cancel</button>
+                <button class="confirm-btn confirm-btn-confirm" id="confirmConfirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <div id="authScreen" class="auth-screen">
@@ -2402,6 +2535,67 @@
             }, duration);
         }
 
+        // Custom Confirmation Modal System
+        function showConfirm(options) {
+            return new Promise((resolve) => {
+                const overlay = document.getElementById('confirmModalOverlay');
+                const icon = document.getElementById('confirmModalIcon');
+                const title = document.getElementById('confirmModalTitle');
+                const message = document.getElementById('confirmModalMessage');
+                const cancelBtn = document.getElementById('confirmCancelBtn');
+                const confirmBtn = document.getElementById('confirmConfirmBtn');
+                
+                // Set content
+                icon.textContent = options.icon || '⚠️';
+                title.textContent = options.title || 'Confirm Action';
+                message.textContent = options.message || 'Are you sure?';
+                cancelBtn.textContent = options.cancelText || 'Cancel';
+                confirmBtn.textContent = options.confirmText || 'Confirm';
+                
+                // Set button style
+                confirmBtn.className = 'confirm-btn confirm-btn-confirm';
+                if (options.confirmType === 'success') {
+                    confirmBtn.classList.add('success');
+                }
+                
+                // Show modal
+                overlay.classList.add('active');
+                
+                // Handle cancel
+                const handleCancel = () => {
+                    overlay.classList.remove('active');
+                    cleanup();
+                    resolve(false);
+                };
+                
+                // Handle confirm
+                const handleConfirm = () => {
+                    overlay.classList.remove('active');
+                    cleanup();
+                    resolve(true);
+                };
+                
+                // Cleanup listeners
+                const cleanup = () => {
+                    cancelBtn.removeEventListener('click', handleCancel);
+                    confirmBtn.removeEventListener('click', handleConfirm);
+                    overlay.removeEventListener('click', handleOverlayClick);
+                };
+                
+                // Close on overlay click
+                const handleOverlayClick = (e) => {
+                    if (e.target === overlay) {
+                        handleCancel();
+                    }
+                };
+                
+                // Add event listeners
+                cancelBtn.addEventListener('click', handleCancel);
+                confirmBtn.addEventListener('click', handleConfirm);
+                overlay.addEventListener('click', handleOverlayClick);
+            });
+        }
+
         // Account Management System
         let currentUser = null;
 
@@ -2578,8 +2772,17 @@
             }
         }
 
-        function handleLogout() {
-            if (confirm('Are you sure you want to logout? Your progress will be saved.')) {
+        async function handleLogout() {
+            const confirmed = await showConfirm({
+                icon: '👋',
+                title: 'Logout?',
+                message: 'Are you sure you want to logout? Your progress will be saved.',
+                cancelText: 'Stay',
+                confirmText: 'Logout',
+                confirmType: 'default'
+            });
+            
+            if (confirmed) {
                 saveGameState();
                 currentUser = null;
                 
@@ -3210,7 +3413,7 @@
             renderShop();
         }
 
-        function applyTraitToCharacter(characterId, traitId) {
+        async function applyTraitToCharacter(characterId, traitId) {
             const character = gameState.characters.find(c => c.id === characterId);
             const traitInventory = gameState.ownedTraits.find(t => t.type === traitId);
             const traitItem = shopItems.find(si => si.id === traitId);
@@ -3222,7 +3425,16 @@
             
             // Check if character already has a trait
             if (character.appliedTrait) {
-                if (!confirm(`This character already has ${character.appliedTrait}. Replace it?`)) {
+                const confirmed = await showConfirm({
+                    icon: '🔄',
+                    title: 'Replace Trait?',
+                    message: `This character already has ${character.appliedTrait}. Replace it with ${traitItem.name}?`,
+                    cancelText: 'Keep Current',
+                    confirmText: 'Replace',
+                    confirmType: 'success'
+                });
+                
+                if (!confirmed) {
                     return;
                 }
             }
@@ -3901,14 +4113,23 @@
             }, 0);
         }
 
-        function sellCharacter(characterId) {
+        async function sellCharacter(characterId) {
             const char = gameState.characters.find(c => c.id === characterId);
             if (!char) return;
             
             const rarityData = rarities.find(r => r.name === char.rarity);
             
-            // Confirm sale
-            if (!confirm(`Sell ${char.name} (${char.rarity}) for ${rarityData.sellPrice} coins?`)) {
+            // Confirm sale with custom modal
+            const confirmed = await showConfirm({
+                icon: '💰',
+                title: 'Sell Character?',
+                message: `Sell ${char.name} (${char.rarity}) for ${rarityData.sellPrice} coins?`,
+                cancelText: 'Keep',
+                confirmText: 'Sell',
+                confirmType: 'default'
+            });
+            
+            if (!confirmed) {
                 return;
             }
             
@@ -5481,10 +5702,19 @@
             updateStats();
         }
 
-        function exitBattle() {
+        async function exitBattle() {
             // Prevent exiting during tournament battles
             if (gameState.currentBattle && gameState.currentBattle.isTournamentBattle) {
-                if (!confirm('⚠️ Exiting will forfeit your tournament match! Are you sure?')) {
+                const confirmed = await showConfirm({
+                    icon: '⚠️',
+                    title: 'Forfeit Tournament?',
+                    message: 'Exiting will forfeit your tournament match! Are you sure?',
+                    cancelText: 'Stay',
+                    confirmText: 'Forfeit',
+                    confirmType: 'default'
+                });
+                
+                if (!confirmed) {
                     return;
                 }
                 // Forfeit tournament - count as loss
