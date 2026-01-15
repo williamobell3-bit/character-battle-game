@@ -4895,6 +4895,16 @@
         }
 
         function exitBattle() {
+            // Prevent exiting during tournament battles
+            if (gameState.currentBattle && gameState.currentBattle.isTournamentBattle) {
+                if (!confirm('⚠️ Exiting will forfeit your tournament match! Are you sure?')) {
+                    return;
+                }
+                // Forfeit tournament - count as loss
+                finishCustomTournamentBattle(false);
+                return;
+            }
+            
             document.getElementById('battleScreen').classList.remove('active');
             document.getElementById('battleResultScreen').style.display = 'none';
             document.getElementById('battleResultScreen').innerHTML = '';
@@ -6569,7 +6579,7 @@
             // Randomly decide who goes first
             const playerGoesFirst = Math.random() < 0.5;
             
-            // Set up battle state
+            // Set up battle state (exactly like quick battle)
             gameState.currentBattle = {
                 player: playerChar,
                 opponent: opponentChar,
@@ -6579,7 +6589,10 @@
                 isTournamentBattle: true
             };
             
-            // Show battle screen
+            // Clear battle log
+            document.getElementById('battleActionLog').innerHTML = '';
+            
+            // Show battle screen (hides all other pages automatically via CSS)
             document.getElementById('battleScreen').classList.add('active');
             
             // Set world background
@@ -6587,9 +6600,13 @@
             const battleBg = document.getElementById('battleBackground');
             battleBg.className = worldClass;
             
-            // Update UI
-            document.getElementById('battleWorldName').textContent = `Tournament Round ${tournament.round}`;
+            // Update UI - this renders all power buttons, health bars, etc.
+            document.getElementById('battleWorldName').textContent = `🏆 Tournament Round ${tournament.round}`;
             updateBattleUI();
+            
+            // Add opening message to battle log
+            addBattleLog(`⚔️ Tournament Battle Begins!`, 'system');
+            addBattleLog(`${playerChar.name} vs ${opponentChar.name}`, 'system');
             
             // If opponent goes first, announce it and start their turn
             if (!playerGoesFirst) {
@@ -6598,7 +6615,7 @@
                     opponentTurn();
                 }, 1000);
             } else {
-                addBattleLog(`You go first!`, 'normal');
+                addBattleLog(`You go first! Choose your power!`, 'normal');
             }
         }
 
