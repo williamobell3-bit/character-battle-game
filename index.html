@@ -1547,9 +1547,125 @@
             font-weight: bold;
             min-height: 30px;
         }
+
+        /* Custom Notification System */
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .notification {
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.98), rgba(30, 30, 50, 0.98));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            min-width: 300px;
+            max-width: 450px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            pointer-events: all;
+            opacity: 0;
+            transform: translateX(100px);
+            animation: slideIn 0.4s ease-out forwards;
+            backdrop-filter: blur(10px);
+        }
+
+        .notification.success {
+            border-left: 5px solid #4CAF50;
+            background: linear-gradient(135deg, rgba(20, 40, 20, 0.98), rgba(30, 50, 30, 0.98));
+        }
+
+        .notification.error {
+            border-left: 5px solid #ff6b6b;
+            background: linear-gradient(135deg, rgba(40, 20, 20, 0.98), rgba(50, 30, 30, 0.98));
+        }
+
+        .notification.warning {
+            border-left: 5px solid #FFD700;
+            background: linear-gradient(135deg, rgba(40, 40, 20, 0.98), rgba(50, 50, 30, 0.98));
+        }
+
+        .notification.info {
+            border-left: 5px solid #87CEEB;
+            background: linear-gradient(135deg, rgba(20, 30, 40, 0.98), rgba(30, 40, 50, 0.98));
+        }
+
+        .notification-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .notification-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .notification-message {
+            font-size: 1em;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.9);
+            white-space: pre-line;
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.5em;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .notification-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .notification.closing {
+            animation: slideOut 0.4s ease-in forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Notification Container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
     <div class="container">
         <div id="authScreen" class="auth-screen">
             <div class="auth-container">
@@ -1895,6 +2011,84 @@
     </div>
 
     <script>
+        // Custom Notification System
+        function showNotification(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('notificationContainer');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            // Determine icon and title based on type
+            let icon = '';
+            let title = '';
+            
+            switch(type) {
+                case 'success':
+                    icon = '✅';
+                    title = 'Success';
+                    break;
+                case 'error':
+                    icon = '❌';
+                    title = 'Error';
+                    break;
+                case 'warning':
+                    icon = '⚠️';
+                    title = 'Warning';
+                    break;
+                case 'info':
+                    icon = 'ℹ️';
+                    title = 'Info';
+                    break;
+                default:
+                    icon = '📢';
+                    title = 'Notification';
+            }
+            
+            notification.innerHTML = `
+                <button class="notification-close" onclick="closeNotification(this)">×</button>
+                <div class="notification-icon">${icon}</div>
+                <div class="notification-title">${title}</div>
+                <div class="notification-message">${message}</div>
+            `;
+            
+            container.appendChild(notification);
+            
+            // Auto-close after duration
+            if (duration > 0) {
+                setTimeout(() => {
+                    closeNotification(notification);
+                }, duration);
+            }
+            
+            return notification;
+        }
+
+        function closeNotification(element) {
+            const notification = element.classList ? element : element.closest('.notification');
+            if (!notification) return;
+            
+            notification.classList.add('closing');
+            setTimeout(() => {
+                notification.remove();
+            }, 400); // Match animation duration
+        }
+
+        // Specialized notification types
+        function showSuccess(message, duration = 4000) {
+            return showNotification(message, 'success', duration);
+        }
+
+        function showError(message, duration = 5000) {
+            return showNotification(message, 'error', duration);
+        }
+
+        function showWarning(message, duration = 5000) {
+            return showNotification(message, 'warning', duration);
+        }
+
+        function showInfo(message, duration = 4000) {
+            return showNotification(message, 'info', duration);
+        }
+
         // Account Management System
         let currentUser = null;
 
@@ -2644,7 +2838,7 @@
             
             // Check if can afford
             if (gameState.coins < item.price) {
-                alert('Not enough coins!');
+                showError('Not enough coins!');
                 return;
             }
             
@@ -2654,12 +2848,12 @@
                 const oneDayAgo = now - (24 * 60 * 60 * 1000);
                 
                 if (gameState.happyHourActive) {
-                    alert('Happy Hour is already active!');
+                    showWarning('Happy Hour is already active!');
                     return;
                 }
                 
                 if (gameState.happyHourLastPurchase && gameState.happyHourLastPurchase > oneDayAgo) {
-                    alert('You can only buy Happy Hour once per day!');
+                    showError('You can only buy Happy Hour once per day!');
                     return;
                 }
             }
@@ -2681,11 +2875,11 @@
                         char.health = char.power;
                     });
                     
-                    alert(`🎉 Happy Hour activated for 24 hours!\n\n✨ 3x luck for packs\n💪 +10 Power/Health to all characters\n🚀 Double jump in Pet Climb\n⚔️ Better battle powers`);
+                    showSuccess(`🎉 Happy Hour activated for 24 hours!\n\n✨ 3x luck for packs\n💪 +10 Power/Health to all characters\n🚀 Double jump in Pet Climb\n⚔️ Better battle powers`, 6000);
                 } else if (item.effect === 'luckMultiplier') {
                     gameState.luckyBlockUses += item.uses || 10;
                     gameState.luckMultiplier = 2;
-                    alert(`${item.icon} Lucky Block purchased! You have ${gameState.luckyBlockUses} lucky pack openings with 2x chance!`);
+                    showSuccess(`${item.icon} Lucky Block purchased! You have ${gameState.luckyBlockUses} lucky pack openings with 2x chance!`);
                 }
             } else if (item.type === 'trait') {
                 // Add trait to inventory
@@ -2695,7 +2889,7 @@
                 } else {
                     gameState.ownedTraits.push({ type: itemId, count: 1 });
                 }
-                alert(`${item.icon} ${item.name} purchased! Apply it to a character from your collection.`);
+                showSuccess(`${item.icon} ${item.name} purchased! Apply it to a character from your collection.`);
             }
             
             saveGameState();
@@ -2709,7 +2903,7 @@
             const traitItem = shopItems.find(si => si.id === traitId);
             
             if (!character || !traitInventory || traitInventory.count <= 0 || !traitItem) {
-                alert('Cannot apply trait!');
+                showError('Cannot apply trait!');
                 return;
             }
             
@@ -2747,7 +2941,7 @@
             }
             
             saveGameState();
-            alert(`${traitItem.icon} ${traitItem.name} applied to ${character.name}!\n+${traitItem.powerBoost} Power\n+${traitItem.strengthsAdded} Bonus Advantages`);
+            showSuccess(`${traitItem.icon} ${traitItem.name} applied to ${character.name}!\n+${traitItem.powerBoost} Power\n+${traitItem.strengthsAdded} Bonus Advantages`, 5000);
             renderCharacters();
             selectCharacter(characterId); // Refresh the stats display
         }
@@ -3353,7 +3547,7 @@
             updateStats();
             renderCharacters();
             
-            alert(`💰 Sold for ${rarityData.sellPrice} coins!`);
+            showSuccess(`💰 Sold for ${rarityData.sellPrice} coins!`);
         }
 
         // Question banks for different modes
@@ -3682,6 +3876,15 @@
             const shuffled = allPowers.sort(() => Math.random() - 0.5);
             const selectedPowers = shuffled.slice(0, 3);
             
+            // CRITICAL: Ensure at least one power has warmup: 0 so player can attack on turn 1
+            const hasImmediatePower = selectedPowers.some(p => p.warmup === 0);
+            if (!hasImmediatePower) {
+                // Replace the last power with a guaranteed immediate power
+                const immediatePowers = allPowers.filter(p => p.warmup === 0);
+                const randomImmediate = immediatePowers[Math.floor(Math.random() * immediatePowers.length)];
+                selectedPowers[2] = randomImmediate;
+            }
+            
             // Set initial warmup (can't use on first turn if warmup > 0)
             selectedPowers.forEach(power => {
                 power.currentCooldown = power.warmup || 0;
@@ -3697,7 +3900,7 @@
         // Tournament System
         function startTournament(tournamentType = '32er') {
             if (!gameState.selectedCharacter) {
-                alert('Select a character first!');
+                showWarning('Select a character first!');
                 return;
             }
             
@@ -4277,7 +4480,7 @@
 
         function startBattle() {
             if (!gameState.selectedCharacter) {
-                alert('Select a character first!');
+                showWarning('Select a character first!');
                 return;
             }
             
@@ -4922,7 +5125,7 @@
                     world.unlocked = true;
                     gameState.unlockedWorlds.push(world.name);
                     saveGameState(); // Save after unlocking world
-                    alert(`🌍 New World Unlocked: ${world.name}!`);
+                    showSuccess(`🌍 New World Unlocked: ${world.name}!`, 5000);
                 }
             });
             renderWorlds();
@@ -5381,11 +5584,11 @@
                 saveGameState();
                 renderExploration();
                 
-                alert(`🎉 Rescue successful! You found ${name}!`);
+                showSuccess(`🎉 Rescue successful! You found ${name}!`);
             } else {
                 saveGameState();
                 renderExploration();
-                alert('😔 No characters found this time. Keep trying!');
+                showInfo('😔 No characters found this time. Keep trying!');
             }
         }
 
