@@ -2981,6 +2981,149 @@
             }
         ];
 
+        // Mobile device detection
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                   || (window.innerWidth <= 768);
+        }
+
+        // Create virtual arrow controls for mobile
+        function createVirtualControls(mode = 'explore') {
+            // Remove existing controls if any
+            const existing = document.getElementById('virtualControls');
+            if (existing) existing.remove();
+            
+            const controls = document.createElement('div');
+            controls.id = 'virtualControls';
+            controls.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                padding: 0 20px;
+                pointer-events: none;
+                z-index: 1000;
+            `;
+            
+            // D-Pad (Left side)
+            const dpad = document.createElement('div');
+            dpad.style.cssText = `
+                position: relative;
+                width: 150px;
+                height: 150px;
+                pointer-events: auto;
+            `;
+            
+            const buttons = [
+                { key: 'ArrowUp', label: '▲', top: '0px', left: '50px', altKey: 'w' },
+                { key: 'ArrowDown', label: '▼', top: '100px', left: '50px', altKey: 's' },
+                { key: 'ArrowLeft', label: '◀', top: '50px', left: '0px', altKey: 'a' },
+                { key: 'ArrowRight', label: '▶', top: '50px', left: '100px', altKey: 'd' }
+            ];
+            
+            buttons.forEach(btn => {
+                const button = document.createElement('div');
+                button.style.cssText = `
+                    position: absolute;
+                    top: ${btn.top};
+                    left: ${btn.left};
+                    width: 50px;
+                    height: 50px;
+                    background: rgba(255, 255, 255, 0.3);
+                    border: 2px solid rgba(255, 255, 255, 0.6);
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 24px;
+                    color: white;
+                    user-select: none;
+                    touch-action: none;
+                    backdrop-filter: blur(5px);
+                `;
+                button.textContent = btn.label;
+                
+                // Touch events
+                button.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    button.style.background = 'rgba(255, 255, 255, 0.6)';
+                    const event = new KeyboardEvent('keydown', { key: btn.key });
+                    document.dispatchEvent(event);
+                    
+                    // Also dispatch alt key for compatibility
+                    if (btn.altKey) {
+                        const altEvent = new KeyboardEvent('keydown', { key: btn.altKey });
+                        document.dispatchEvent(altEvent);
+                    }
+                });
+                
+                button.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    button.style.background = 'rgba(255, 255, 255, 0.3)';
+                    const event = new KeyboardEvent('keyup', { key: btn.key });
+                    document.dispatchEvent(event);
+                    
+                    // Also dispatch alt key for compatibility
+                    if (btn.altKey) {
+                        const altEvent = new KeyboardEvent('keyup', { key: btn.altKey });
+                        document.dispatchEvent(altEvent);
+                    }
+                });
+                
+                dpad.appendChild(button);
+            });
+            
+            controls.appendChild(dpad);
+            
+            // Jump button (Right side) - only for Pet Climb
+            if (mode === 'climb') {
+                const jumpButton = document.createElement('div');
+                jumpButton.style.cssText = `
+                    width: 80px;
+                    height: 80px;
+                    background: rgba(255, 215, 0, 0.5);
+                    border: 3px solid rgba(255, 215, 0, 0.8);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 32px;
+                    color: white;
+                    user-select: none;
+                    touch-action: none;
+                    pointer-events: auto;
+                    backdrop-filter: blur(5px);
+                    align-self: flex-end;
+                `;
+                jumpButton.textContent = '⬆';
+                
+                jumpButton.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    jumpButton.style.background = 'rgba(255, 215, 0, 0.8)';
+                    const event = new KeyboardEvent('keydown', { key: ' ' });
+                    document.dispatchEvent(event);
+                });
+                
+                jumpButton.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    jumpButton.style.background = 'rgba(255, 215, 0, 0.5)';
+                    const event = new KeyboardEvent('keyup', { key: ' ' });
+                    document.dispatchEvent(event);
+                });
+                
+                controls.appendChild(jumpButton);
+            }
+            
+            document.body.appendChild(controls);
+        }
+
+        // Remove virtual controls
+        function removeVirtualControls() {
+            const controls = document.getElementById('virtualControls');
+            if (controls) controls.remove();
+        }
+
         // Game state
         const gameState = {
             mode: 'online',
@@ -3341,6 +3484,80 @@
                 if (rand <= cumulative) return rarity.name;
             }
             return 'common';
+        }
+
+        // Smart matchmaking - generates opponents based on player's character strength
+        function getOpponentRarity(playerCharacter) {
+            if (!playerCharacter) return getRarity(); // Fallback to normal if no character
+            
+            // Find player's rarity index
+            const playerRarityIndex = rarities.findIndex(r => r.name === playerCharacter.rarity);
+            const playerPower = playerCharacter.power || 50;
+            
+            // Base chance to face same or higher rarity
+            const rand = Math.random() * 100;
+            let targetRarityIndex = playerRarityIndex;
+            
+            // Strong characters (high rarity/power) face tougher opponents
+            // 40% chance to face same rarity
+            // 35% chance to face +1 rarity tier
+            // 15% chance to face +2 rarity tiers
+            // 10% chance to face lower rarity
+            
+            if (playerRarityIndex >= 6) { // Extreme+ tier (index 6+)
+                if (rand < 35) {
+                    targetRarityIndex = Math.min(playerRarityIndex + 1, rarities.length - 1); // +1 tier
+                } else if (rand < 50) {
+                    targetRarityIndex = Math.min(playerRarityIndex + 2, rarities.length - 1); // +2 tiers
+                } else if (rand < 90) {
+                    targetRarityIndex = playerRarityIndex; // Same tier
+                } else {
+                    targetRarityIndex = Math.max(playerRarityIndex - 1, 0); // -1 tier (rare)
+                }
+            } else if (playerRarityIndex >= 4) { // Legendary+ tier (index 4-5)
+                if (rand < 30) {
+                    targetRarityIndex = Math.min(playerRarityIndex + 1, rarities.length - 1); // +1 tier
+                } else if (rand < 45) {
+                    targetRarityIndex = Math.min(playerRarityIndex + 2, rarities.length - 1); // +2 tiers
+                } else if (rand < 85) {
+                    targetRarityIndex = playerRarityIndex; // Same tier
+                } else {
+                    targetRarityIndex = Math.max(playerRarityIndex - 1, 0); // -1 tier
+                }
+            } else if (playerRarityIndex >= 2) { // Rare+ tier (index 2-3)
+                if (rand < 25) {
+                    targetRarityIndex = Math.min(playerRarityIndex + 1, rarities.length - 1); // +1 tier
+                } else if (rand < 35) {
+                    targetRarityIndex = Math.min(playerRarityIndex + 2, rarities.length - 1); // +2 tiers
+                } else if (rand < 80) {
+                    targetRarityIndex = playerRarityIndex; // Same tier
+                } else {
+                    targetRarityIndex = Math.max(playerRarityIndex - 1, 0); // -1 tier
+                }
+            } else { // Common/Uncommon tier (index 0-1)
+                // Weaker characters face easier opponents more often
+                if (rand < 60) {
+                    targetRarityIndex = playerRarityIndex; // Same tier
+                } else if (rand < 80) {
+                    targetRarityIndex = Math.min(playerRarityIndex + 1, rarities.length - 1); // +1 tier
+                } else if (rand < 90) {
+                    targetRarityIndex = Math.min(playerRarityIndex + 2, rarities.length - 1); // +2 tiers
+                } else {
+                    targetRarityIndex = Math.max(playerRarityIndex - 1, 0); // -1 tier (if possible)
+                }
+            }
+            
+            // Additional power-based adjustment
+            // If player has very high power for their rarity, increase difficulty
+            const expectedPower = 10 + (playerRarityIndex * 20) + 25; // Middle of expected range
+            if (playerPower > expectedPower * 1.3) { // 30% above expected
+                // High chance to bump up difficulty
+                if (Math.random() < 0.4) {
+                    targetRarityIndex = Math.min(targetRarityIndex + 1, rarities.length - 1);
+                }
+            }
+            
+            return rarities[targetRarityIndex].name;
         }
 
         // Shop Functions
@@ -5924,9 +6141,9 @@
                 return;
             }
             
-            // Generate opponent
+            // Generate opponent using smart matchmaking
             const opponentPack = packs[Math.floor(Math.random() * packs.length)];
-            const opponentRarity = getRarity();
+            const opponentRarity = getOpponentRarity(gameState.selectedCharacter); // Use smart matchmaking!
             const opponentIcon = getCharacterIcon(opponentPack, opponentRarity); // Get icon based on rarity
             const opponentRarityData = rarities.find(r => r.name === opponentRarity);
             const opponentName = getCharacterName(opponentPack.name, opponentIcon, opponentRarity);
@@ -7321,6 +7538,11 @@
             // Set up keyboard controls
             document.addEventListener('keydown', handleMapKeyDown);
             
+            // Add virtual controls for mobile devices
+            if (isMobileDevice()) {
+                createVirtualControls('explore');
+            }
+            
             // Start game loop
             if (explorationGameLoop) {
                 cancelAnimationFrame(explorationGameLoop);
@@ -7824,6 +8046,9 @@
         function navigateTo(pageName) {
             // Hide all pages
             document.querySelectorAll('.page-content').forEach(p => p.style.display = 'none');
+            
+            // Remove virtual controls when leaving pages that use them
+            removeVirtualControls();
             
             // Show selected page
             const pageMap = {
@@ -8895,6 +9120,11 @@
             
             document.addEventListener('keydown', window.climbKeyDownHandler);
             document.addEventListener('keyup', window.climbKeyUpHandler);
+            
+            // Add virtual controls for mobile devices
+            if (isMobileDevice()) {
+                createVirtualControls('climb');
+            }
             
             // Game loop
             function climbLoop() {
