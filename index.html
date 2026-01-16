@@ -2729,28 +2729,13 @@
                 // Hide auth screen
                 document.getElementById('authScreen').style.display = 'none';
                 
-                // Check if user has already selected a game mode and style
-                if (gameState.selectedGameMode && gameState.selectedGameStyle) {
-                    // Go directly to game
-                    document.getElementById('gameScreen').style.display = 'block';
-                    document.getElementById('usernameDisplay').textContent = username;
-                    setTimeout(() => {
-                        init();
-                        const modeBtn = gameState.mode === 'online' 
-                            ? document.querySelector('.mode-btn.online') 
-                            : document.querySelector('.mode-btn.offline');
-                        if (modeBtn) {
-                            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-                            modeBtn.classList.add('active');
-                        }
-                    }, 100);
-                } else if (gameState.selectedGameMode) {
-                    // Show game style selection screen
-                    document.getElementById('gameStyleSelectionScreen').classList.add('active');
-                } else {
-                    // Show mode selection screen
-                    document.getElementById('modeSelectionScreen').classList.add('active');
-                }
+                // Always show mode selection screen on login (allows changing mode)
+                document.getElementById('modeSelectionScreen').classList.add('active');
+                
+                // Reset game mode and style to allow re-selection
+                // This allows users to change their mode every time they log in
+                gameState.selectedGameMode = null;
+                gameState.selectedGameStyle = null;
             } catch (error) {
                 // Silently handle any errors
                 const errorDiv = document.getElementById('loginError');
@@ -4725,7 +4710,27 @@
                     { question: "5 × 2 = ?", answer: "10" },
                     { question: "10 - 4 = ?", answer: "6" },
                     { question: "6 ÷ 2 = ?", answer: "3" },
-                    { question: "3 + 7 = ?", answer: "10" }
+                    { question: "3 + 7 = ?", answer: "10" },
+                    { question: "9 - 5 = ?", answer: "4" },
+                    { question: "4 × 3 = ?", answer: "12" },
+                    { question: "8 ÷ 4 = ?", answer: "2" },
+                    { question: "5 + 5 = ?", answer: "10" },
+                    { question: "7 - 3 = ?", answer: "4" },
+                    { question: "2 × 6 = ?", answer: "12" },
+                    { question: "15 ÷ 3 = ?", answer: "5" },
+                    { question: "6 + 4 = ?", answer: "10" },
+                    { question: "11 - 7 = ?", answer: "4" },
+                    { question: "3 × 5 = ?", answer: "15" },
+                    { question: "20 ÷ 4 = ?", answer: "5" },
+                    { question: "8 + 6 = ?", answer: "14" },
+                    { question: "12 - 5 = ?", answer: "7" },
+                    { question: "4 × 4 = ?", answer: "16" },
+                    { question: "18 ÷ 6 = ?", answer: "3" },
+                    { question: "7 + 8 = ?", answer: "15" },
+                    { question: "14 - 6 = ?", answer: "8" },
+                    { question: "5 × 3 = ?", answer: "15" },
+                    { question: "16 ÷ 2 = ?", answer: "8" },
+                    { question: "9 + 3 = ?", answer: "12" }
                 ],
                 medium: [
                     { question: "7 × 8 = ?", answer: "56" },
@@ -4734,7 +4739,25 @@
                     { question: "12 × 5 = ?", answer: "60" },
                     { question: "81 ÷ 9 = ?", answer: "9" },
                     { question: "25 + 36 = ?", answer: "61" },
-                    { question: "144 ÷ 12 = ?", answer: "12" }
+                    { question: "144 ÷ 12 = ?", answer: "12" },
+                    { question: "9 × 7 = ?", answer: "63" },
+                    { question: "48 + 35 = ?", answer: "83" },
+                    { question: "90 - 54 = ?", answer: "36" },
+                    { question: "11 × 6 = ?", answer: "66" },
+                    { question: "72 ÷ 8 = ?", answer: "9" },
+                    { question: "34 + 49 = ?", answer: "83" },
+                    { question: "120 - 68 = ?", answer: "52" },
+                    { question: "13 × 4 = ?", answer: "52" },
+                    { question: "96 ÷ 6 = ?", answer: "16" },
+                    { question: "56 + 28 = ?", answer: "84" },
+                    { question: "150 - 77 = ?", answer: "73" },
+                    { question: "8 × 9 = ?", answer: "72" },
+                    { question: "108 ÷ 9 = ?", answer: "12" },
+                    { question: "67 + 45 = ?", answer: "112" },
+                    { question: "200 - 123 = ?", answer: "77" },
+                    { question: "14 × 5 = ?", answer: "70" },
+                    { question: "132 ÷ 11 = ?", answer: "12" },
+                    { question: "88 + 76 = ?", answer: "164" }
                 ],
                 hard: [
                     { question: "17 × 13 = ?", answer: "221" },
@@ -4742,7 +4765,26 @@
                     { question: "125 + 89 = ?", answer: "214" },
                     { question: "23 × 11 = ?", answer: "253" },
                     { question: "1000 - 347 = ?", answer: "653" },
-                    { question: "19 × 19 = ?", answer: "361" }
+                    { question: "19 × 19 = ?", answer: "361" },
+                    { question: "324 ÷ 18 = ?", answer: "18" },
+                    { question: "567 + 234 = ?", answer: "801" },
+                    { question: "888 - 456 = ?", answer: "432" },
+                    { question: "26 × 15 = ?", answer: "390" },
+                    { question: "441 ÷ 21 = ?", answer: "21" },
+                    { question: "789 + 456 = ?", answer: "1245" },
+                    { question: "1500 - 678 = ?", answer: "822" },
+                    { question: "37 × 12 = ?", answer: "444" },
+                    { question: "576 ÷ 24 = ?", answer: "24" },
+                    { question: "999 + 111 = ?", answer: "1110" },
+                    { question: "2000 - 1234 = ?", answer: "766" },
+                    { question: "45 × 16 = ?", answer: "720" },
+                    { question: "625 ÷ 25 = ?", answer: "25" },
+                    { question: "678 + 987 = ?", answer: "1665" },
+                    { question: "3000 - 1789 = ?", answer: "1211" },
+                    { question: "53 × 14 = ?", answer: "742" },
+                    { question: "784 ÷ 28 = ?", answer: "28" },
+                    { question: "1234 + 5678 = ?", answer: "6912" },
+                    { question: "5000 - 2345 = ?", answer: "2655" }
                 ]
             },
             science: {
@@ -4751,7 +4793,27 @@
                     { question: "What is H2O?", answer: "water" },
                     { question: "What do bees make?", answer: "honey" },
                     { question: "What gas do we breathe?", answer: "oxygen" },
-                    { question: "What animal says meow?", answer: "cat" }
+                    { question: "What animal says meow?", answer: "cat" },
+                    { question: "What animal says woof?", answer: "dog" },
+                    { question: "What color is the sky?", answer: "blue" },
+                    { question: "What do plants need to grow? (sun, water, or soil)", answer: "sun" },
+                    { question: "How many wings does a bird have?", answer: "2" },
+                    { question: "What do cows drink?", answer: "water" },
+                    { question: "What season is coldest?", answer: "winter" },
+                    { question: "What is frozen water called?", answer: "ice" },
+                    { question: "How many eyes do humans have?", answer: "2" },
+                    { question: "What animal has a trunk?", answer: "elephant" },
+                    { question: "What color is grass?", answer: "green" },
+                    { question: "What do fish live in?", answer: "water" },
+                    { question: "What is the opposite of hot?", answer: "cold" },
+                    { question: "How many fingers on one hand?", answer: "5" },
+                    { question: "What animal hops?", answer: "rabbit" },
+                    { question: "What orbits Earth?", answer: "moon" },
+                    { question: "What gives us light during the day?", answer: "sun" },
+                    { question: "What do birds have?", answer: "feathers" },
+                    { question: "What do we use to hear?", answer: "ears" },
+                    { question: "What bone protects your brain?", answer: "skull" },
+                    { question: "What animal swims in the ocean?", answer: "fish" }
                 ],
                 medium: [
                     { question: "What planet is closest to the Sun?", answer: "mercury" },
@@ -4760,14 +4822,52 @@
                     { question: "What is the largest planet?", answer: "jupiter" },
                     { question: "What is the hottest planet?", answer: "venus" },
                     { question: "What do caterpillars turn into?", answer: "butterfly" },
-                    { question: "What is the center of an atom?", answer: "nucleus" }
+                    { question: "What is the center of an atom?", answer: "nucleus" },
+                    { question: "What is the red planet?", answer: "mars" },
+                    { question: "What gas do plants produce?", answer: "oxygen" },
+                    { question: "What is the smallest planet?", answer: "mercury" },
+                    { question: "What organ pumps blood?", answer: "heart" },
+                    { question: "What is the hardest natural substance?", answer: "diamond" },
+                    { question: "What is Earth's natural satellite?", answer: "moon" },
+                    { question: "What type of rock is formed by cooling lava?", answer: "igneous" },
+                    { question: "What is the study of plants called?", answer: "botany" },
+                    { question: "What is the boiling point of water in Celsius?", answer: "100" },
+                    { question: "What planet has rings?", answer: "saturn" },
+                    { question: "What is the study of animals called?", answer: "zoology" },
+                    { question: "How many bones in the human body?", answer: "206" },
+                    { question: "What is the largest mammal?", answer: "whale" },
+                    { question: "What gas makes up most of Earth's atmosphere?", answer: "nitrogen" },
+                    { question: "What is the chemical formula for table salt?", answer: "nacl" },
+                    { question: "What is the fastest land animal?", answer: "cheetah" },
+                    { question: "What is photosynthesis?", answer: "converting light to energy" },
+                    { question: "What is the largest organ in the human body?", answer: "skin" }
                 ],
                 hard: [
                     { question: "What is the speed of light in m/s? (3×10^8, 3×10^7, 3×10^9)", answer: "3×10^8" },
                     { question: "What is the chemical symbol for gold?", answer: "au" },
                     { question: "How many chromosomes do humans have?", answer: "46" },
                     { question: "What is the powerhouse of the cell?", answer: "mitochondria" },
-                    { question: "What is the freezing point of water in Celsius?", answer: "0" }
+                    { question: "What is the freezing point of water in Celsius?", answer: "0" },
+                    { question: "What is the chemical symbol for silver?", answer: "ag" },
+                    { question: "What is the pH of pure water?", answer: "7" },
+                    { question: "What is the speed of sound in m/s? (approx)", answer: "343" },
+                    { question: "What particle has no charge?", answer: "neutron" },
+                    { question: "What is Avogadro's number? (6.02×10^23 or 6.02×10^22)", answer: "6.02×10^23" },
+                    { question: "What is DNA short for? (deoxyribonucleic acid)", answer: "deoxyribonucleic acid" },
+                    { question: "What is the largest bone in the human body?", answer: "femur" },
+                    { question: "What is the most abundant element in universe?", answer: "hydrogen" },
+                    { question: "What is the chemical symbol for iron?", answer: "fe" },
+                    { question: "How many valence electrons does carbon have?", answer: "4" },
+                    { question: "What is the study of fungi called?", answer: "mycology" },
+                    { question: "What is the smallest unit of life?", answer: "cell" },
+                    { question: "What is the chemical symbol for sodium?", answer: "na" },
+                    { question: "What is the study of earthquakes called?", answer: "seismology" },
+                    { question: "What is the rarest blood type?", answer: "ab negative" },
+                    { question: "What is the chemical symbol for potassium?", answer: "k" },
+                    { question: "What is absolute zero in Celsius?", answer: "-273" },
+                    { question: "What is the unit of electrical resistance?", answer: "ohm" },
+                    { question: "What organelle contains genetic material?", answer: "nucleus" },
+                    { question: "What is the study of heredity called?", answer: "genetics" }
                 ]
             },
             logic: {
@@ -4776,7 +4876,27 @@
                     { question: "If you have 3 apples and give away 1, how many left?", answer: "2" },
                     { question: "How many sides does a triangle have?", answer: "3" },
                     { question: "What number is between 5 and 7?", answer: "6" },
-                    { question: "True or False: Fire is hot", answer: "true" }
+                    { question: "True or False: Fire is hot", answer: "true" },
+                    { question: "What comes next: 5, 10, 15, 20, __?", answer: "25" },
+                    { question: "How many sides does a square have?", answer: "4" },
+                    { question: "True or False: Ice is cold", answer: "true" },
+                    { question: "What number comes before 10?", answer: "9" },
+                    { question: "If you have 5 toys and get 2 more, how many total?", answer: "7" },
+                    { question: "What comes next: 1, 2, 3, 4, __?", answer: "5" },
+                    { question: "True or False: A circle has corners", answer: "false" },
+                    { question: "How many sides does a pentagon have?", answer: "5" },
+                    { question: "What number is 10 minus 3?", answer: "7" },
+                    { question: "True or False: Water is wet", answer: "true" },
+                    { question: "What comes after 19?", answer: "20" },
+                    { question: "If you eat 1 of 4 cookies, how many left?", answer: "3" },
+                    { question: "What comes next: 10, 20, 30, __?", answer: "40" },
+                    { question: "True or False: The sun rises in the east", answer: "true" },
+                    { question: "How many sides does a hexagon have?", answer: "6" },
+                    { question: "What is 7 plus 3?", answer: "10" },
+                    { question: "True or False: Birds can fly", answer: "true" },
+                    { question: "What comes next: 3, 6, 9, __?", answer: "12" },
+                    { question: "If today is Sunday, what is tomorrow?", answer: "monday" },
+                    { question: "What number is half of 10?", answer: "5" }
                 ],
                 medium: [
                     { question: "What is the next letter: A, C, E, __?", answer: "g" },
@@ -4784,14 +4904,53 @@
                     { question: "What comes next: 1, 1, 2, 3, 5, __?", answer: "8" },
                     { question: "If today is Monday, what is 3 days from now?", answer: "thursday" },
                     { question: "If A=1, B=2, C=3, what is D?", answer: "4" },
-                    { question: "How many vowels in 'education'?", answer: "5" }
+                    { question: "How many vowels in 'education'?", answer: "5" },
+                    { question: "What comes next: 2, 4, 8, 16, __?", answer: "32" },
+                    { question: "If today is Friday, what was 2 days ago?", answer: "wednesday" },
+                    { question: "What is the next letter: B, D, F, __?", answer: "h" },
+                    { question: "What comes next: 3, 9, 27, __?", answer: "81" },
+                    { question: "How many consonants in 'hello'?", answer: "3" },
+                    { question: "What comes next: 5, 10, 20, 40, __?", answer: "80" },
+                    { question: "If E=5, F=6, G=7, what is H?", answer: "8" },
+                    { question: "What comes next: 100, 50, 25, __?", answer: "12.5" },
+                    { question: "True or False: October has 31 days", answer: "true" },
+                    { question: "What is the next number: 7, 14, 21, __?", answer: "28" },
+                    { question: "How many days in a leap year?", answer: "366" },
+                    { question: "What comes next: 11, 22, 33, __?", answer: "44" },
+                    { question: "If January is month 1, what number is June?", answer: "6" },
+                    { question: "What is the next prime: 2, 3, 5, 7, __?", answer: "11" },
+                    { question: "How many hours in 2 days?", answer: "48" },
+                    { question: "What comes next: 1, 4, 7, 10, __?", answer: "13" },
+                    { question: "True or False: A year has 52 weeks", answer: "true" },
+                    { question: "What is the next letter: M, N, O, __?", answer: "p" },
+                    { question: "If 1 hour = 60 minutes, how many in 2 hours?", answer: "120" }
                 ],
                 hard: [
                     { question: "If all bloops are razzies and all razzies are lazzies, are all bloops lazzies? (yes/no)", answer: "yes" },
                     { question: "What comes next: 1, 4, 9, 16, __?", answer: "25" },
                     { question: "If 5 cats can catch 5 mice in 5 minutes, how many minutes for 100 cats to catch 100 mice?", answer: "5" },
                     { question: "What comes next in pattern: 2, 6, 12, 20, __?", answer: "30" },
-                    { question: "If all Foos are Bars and some Bars are Bazs, are all Foos Bazs? (yes/no)", answer: "no" }
+                    { question: "If all Foos are Bars and some Bars are Bazs, are all Foos Bazs? (yes/no)", answer: "no" },
+                    { question: "What comes next: 1, 8, 27, 64, __?", answer: "125" },
+                    { question: "If you flip a fair coin 3 times, how many outcomes?", answer: "8" },
+                    { question: "What is the next Fibonacci: 13, 21, 34, __?", answer: "55" },
+                    { question: "If a clock shows 3:15, what angle between hands?", answer: "7.5" },
+                    { question: "What comes next: 2, 3, 5, 7, 11, __?", answer: "13" },
+                    { question: "If all As are Bs and no Bs are Cs, can As be Cs? (yes/no)", answer: "no" },
+                    { question: "What is 2^10?", answer: "1024" },
+                    { question: "What comes next: 0, 1, 1, 2, 3, 5, 8, 13, __?", answer: "21" },
+                    { question: "How many diagonals in a pentagon?", answer: "5" },
+                    { question: "What is the sum of angles in a triangle?", answer: "180" },
+                    { question: "If train A leaves at 2pm going 60mph, and train B leaves at 3pm going 80mph, when do they meet? (hours after 2pm)", answer: "4" },
+                    { question: "What comes next: 1, 3, 6, 10, 15, __?", answer: "21" },
+                    { question: "How many edges on a cube?", answer: "12" },
+                    { question: "What is 15% of 200?", answer: "30" },
+                    { question: "If today is the 15th, what date is 2 weeks ago?", answer: "1" },
+                    { question: "What comes next: 1, 2, 4, 7, 11, __?", answer: "16" },
+                    { question: "How many vertices on a rectangular prism?", answer: "8" },
+                    { question: "What is the factorial of 5?", answer: "120" },
+                    { question: "If probability of rain is 0.3, what is P(no rain)?", answer: "0.7" },
+                    { question: "What comes next in sequence: 2, 12, 36, 80, __?", answer: "150" }
                 ]
             }
         };
@@ -4879,11 +5038,21 @@
                 return;
             }
             
+            // Safety check for undefined question or answer
+            if (!currentQuestion || !currentQuestion.answer) {
+                feedback.textContent = '❌ Error: Question not loaded properly';
+                feedback.style.color = '#ff6b6b';
+                return;
+            }
+            
             const correctAnswer = currentQuestion.answer.toLowerCase();
             
             if (userAnswer === correctAnswer) {
                 feedback.textContent = '✅ Correct! Using power...';
                 feedback.style.color = '#51cf66';
+                
+                // Reset consecutive wrong answers on correct answer
+                gameState.currentBattle.consecutiveWrong = 0;
                 
                 // Increase difficulty on correct answer
                 adjustDifficulty(true);
@@ -4893,7 +5062,53 @@
                     executeUsePower(currentPowerIndex);
                 }, 1000);
             } else {
-                feedback.textContent = '❌ Incorrect! Try again.';
+                // Track consecutive wrong answers
+                if (!gameState.currentBattle.consecutiveWrong) {
+                    gameState.currentBattle.consecutiveWrong = 0;
+                }
+                gameState.currentBattle.consecutiveWrong++;
+                
+                // Check for Faux Pas (3 wrong in a row)
+                if (gameState.currentBattle.consecutiveWrong >= 3) {
+                    feedback.textContent = '😱 Faux Pas! Three strikes - you lose your turn!';
+                    feedback.style.color = '#ff6b6b';
+                    feedback.style.fontWeight = 'bold';
+                    
+                    // Reset counter
+                    gameState.currentBattle.consecutiveWrong = 0;
+                    
+                    // Close modal and skip turn
+                    setTimeout(() => {
+                        document.getElementById('questionModal').classList.remove('active');
+                        
+                        // Show dramatic notification
+                        showWarning('💥 FAUX PAS! Three wrong answers - turn skipped!', 4000);
+                        
+                        // Add to battle log
+                        addBattleLog(`${gameState.currentBattle.player.name} committed a FAUX PAS! Turn lost! 😱`, 'damage');
+                        
+                        // Skip turn - don't execute power, just switch to opponent
+                        setTimeout(() => {
+                            const battle = gameState.currentBattle;
+                            
+                            // Reduce all cooldowns without executing power
+                            battle.player.powers.forEach(p => p.currentCooldown = Math.max(0, p.currentCooldown - 1));
+                            battle.opponent.powers.forEach(p => p.currentCooldown = Math.max(0, p.currentCooldown - 1));
+                            
+                            // Switch to opponent's turn
+                            battle.turn = 'opponent';
+                            updateBattleUI();
+                            
+                            // Opponent takes turn
+                            setTimeout(() => opponentTurn(), 1500);
+                        }, 2000);
+                    }, 2000);
+                    
+                    return;
+                }
+                
+                // Regular wrong answer feedback
+                feedback.textContent = `❌ Incorrect! Try again. (${gameState.currentBattle.consecutiveWrong}/3 strikes)`;
                 feedback.style.color = '#ff6b6b';
                 
                 // Decrease difficulty on wrong answer
@@ -5396,7 +5611,8 @@
                 turn: playerGoesFirst ? 'player' : 'opponent',
                 round: 1,
                 log: [],
-                isTournament: true
+                isTournament: true,
+                consecutiveWrong: 0  // Track consecutive wrong answers for Faux Pas
             };
             
             // Show battle screen
@@ -5689,7 +5905,8 @@
                 opponent: opponent,
                 turn: playerGoesFirst ? 'player' : 'opponent',
                 round: 1,
-                log: []
+                log: [],
+                consecutiveWrong: 0  // Track consecutive wrong answers for Faux Pas
             };
             
             // Show battle screen
@@ -5915,6 +6132,29 @@
 
         function opponentTurn() {
             const battle = gameState.currentBattle;
+            
+            // 10% chance opponent commits a Faux Pas (higher difficulty = lower chance)
+            const fauxPasChance = gameState.questionDifficulty === 'easy' ? 0.15 : 
+                                   gameState.questionDifficulty === 'medium' ? 0.10 : 0.05;
+            
+            if (Math.random() < fauxPasChance) {
+                // Opponent commits Faux Pas!
+                showWarning('💥 Opponent Faux Pas! They lose their turn!', 4000);
+                addBattleLog(`${battle.opponent.name} committed a FAUX PAS! Turn lost! 😱`, 'heal');
+                
+                // Reduce cooldowns without taking action
+                battle.player.powers.forEach(p => p.currentCooldown = Math.max(0, p.currentCooldown - 1));
+                battle.opponent.powers.forEach(p => p.currentCooldown = Math.max(0, p.currentCooldown - 1));
+                
+                // Skip to player's turn
+                setTimeout(() => {
+                    battle.turn = 'player';
+                    battle.round++;
+                    updateBattleUI();
+                }, 2000);
+                
+                return;
+            }
             
             // AI chooses a power (prefers off-cooldown, higher damage)
             const availablePowers = battle.opponent.powers.filter(p => p.currentCooldown === 0);
@@ -6467,6 +6707,9 @@
         function showTournamentBattle(tournamentType = '32er') {
             const content = document.getElementById('battleModeContent');
             
+            // Store tournament type for later use
+            currentTournamentType = tournamentType;
+            
             let description = '';
             let requirement = '';
             
@@ -6483,11 +6726,14 @@
             }
             
             content.innerHTML = `
-                <h2 style="text-align: center; margin: 30px 0 20px;">Select Your Fighter</h2>
+                <h2 style="text-align: center; margin: 30px 0 20px;">⚔️ Select Your Fighter</h2>
                 <p style="text-align: center; font-size: 1.1em; opacity: 0.8; margin-bottom: 20px;">
                     ${description}
                 </p>
                 ${requirement}
+                <p style="text-align: center; font-size: 1em; opacity: 0.7; margin-bottom: 30px;">
+                    Click a character to enter immediately!
+                </p>
                 <div class="character-grid" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));">
                     ${gameState.characters.map(char => {
                         const rarityData = rarities.find(r => r.name === char.rarity);
@@ -6495,7 +6741,7 @@
                         return `
                             <div class="character-card ${isSelected ? 'selected' : ''}" 
                                  onclick="selectCharacterForBattle(${char.id})"
-                                 style="border-color: ${rarityData.color}; ${isSelected ? 'box-shadow: 0 0 20px ' + rarityData.color + ';' : ''}">
+                                 style="border-color: ${rarityData.color}; ${isSelected ? 'box-shadow: 0 0 20px ' + rarityData.color + ';' : ''} cursor: pointer; transition: all 0.3s ease;">
                                 <div class="character-icon">${char.icon}</div>
                                 <div class="character-name">${char.name}</div>
                                 <div class="character-rarity" style="color: ${rarityData.color};">
@@ -6508,17 +6754,11 @@
                     }).join('')}
                 </div>
                 
-                ${gameState.selectedCharacter && (tournamentType !== 'latrixhole' || gameState.characters.length >= 8) ? `
-                    <div style="text-align: center; margin-top: 40px;">
-                        <button class="battle-btn" onclick="startTournament('${tournamentType}')" style="font-size: 1.5em; padding: 20px 60px; background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);">
-                            🏆 Enter Tournament!
-                        </button>
-                    </div>
-                ` : `
-                    <div style="text-align: center; margin-top: 40px; opacity: 0.6;">
-                        <p style="font-size: 1.2em;">Select a character to enter the tournament</p>
-                    </div>
-                `}
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="battle-btn" onclick="showTournamentSelection()" style="background: rgba(255,255,255,0.2);">
+                        ← Back to Tournaments
+                    </button>
+                </div>
             `;
         }
 
@@ -6526,9 +6766,46 @@
             const char = gameState.characters.find(c => c.id === characterId);
             if (char) {
                 gameState.selectedCharacter = char;
-                renderBattleSelection();
+                
+                // Store which tournament type we're in
+                const urlParams = new URLSearchParams(window.location.search);
+                const tournamentType = currentTournamentType || '32er'; // Use stored tournament type
+                
+                // Show visual feedback
+                document.querySelectorAll('.character-card').forEach(card => {
+                    card.classList.remove('selected');
+                    card.style.boxShadow = '';
+                });
+                
+                const selectedCard = event.target.closest('.character-card');
+                if (selectedCard) {
+                    selectedCard.classList.add('selected');
+                    const rarityData = rarities.find(r => r.name === char.rarity);
+                    selectedCard.style.boxShadow = `0 0 20px ${rarityData.color}`;
+                }
+                
+                // Show message and auto-start tournament
+                const content = document.getElementById('battleModeContent');
+                content.innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px;">
+                        <div style="font-size: 8em; margin-bottom: 30px;">${char.icon}</div>
+                        <h2 style="font-size: 2.5em; margin-bottom: 20px;">Entering Tournament...</h2>
+                        <p style="font-size: 1.5em; opacity: 0.9;">
+                            Fighting with <span style="color: ${rarities.find(r => r.name === char.rarity).color};">${char.name}</span>
+                        </p>
+                        <div style="font-size: 3em; margin-top: 40px;">⚔️</div>
+                    </div>
+                `;
+                
+                // Automatically start tournament after brief delay
+                setTimeout(() => {
+                    startTournament(tournamentType);
+                }, 800);
             }
         }
+
+        // Store tournament type when showing tournament battle
+        let currentTournamentType = '32er';
 
         function renderWorlds() {
             const grid = document.getElementById('worldGrid');
@@ -6553,11 +6830,11 @@
 
         function selectWorld(name, unlocked) {
             if (!unlocked) {
-                alert('This world is locked! Win more battles to unlock it.');
+                showWarning('This world is locked! Win more battles to unlock it.');
                 return;
             }
             gameState.currentWorld = name;
-            alert(`Now battling in: ${name}`);
+            showSuccess(`Now battling in: ${name}`, 3000);
         }
 
         function exploreWorld(worldName) {
@@ -7972,7 +8249,8 @@
                 turn: playerGoesFirst ? 'player' : 'opponent',
                 round: 1,
                 log: [],
-                isTournamentBattle: true
+                isTournamentBattle: true,
+                consecutiveWrong: 0  // Track consecutive wrong answers for Faux Pas
             };
             
             // Clear battle log
