@@ -2456,18 +2456,6 @@
                     shapes = ['square', 'circle', 'triangle', 'star', 'heart', 'diamond'];
                     duration = 6500;
                     break;
-                case 'divine':
-                    confettiCount = 250;
-                    colors = ['#FFFFFF', '#FFD700', '#87CEEB', '#DDA0DD'];
-                    shapes = ['square', 'circle', 'triangle', 'star', 'heart', 'diamond'];
-                    duration = 7000;
-                    break;
-                case 'supreme':
-                    confettiCount = 300;
-                    colors = ['#FFD700', '#FF69B4', '#00FFFF', '#FF6347', '#9370DB', '#FFFFFF'];
-                    shapes = ['square', 'circle', 'triangle', 'star', 'heart', 'diamond'];
-                    duration = 8000;
-                    break;
                 default:
                     confettiCount = 30;
                     colors = ['#4CAF50'];
@@ -3828,12 +3816,522 @@
                     victorious: ['All Wishes Granted', 'Eternal Dream', 'Undefeated Hope', 'Supreme Wish']
                 }
             },
-            'House Pack': {},
-            'Fire Monster Pack': {},
-            'Ice Monster Pack': {},
-            'Tropic Pack': {},
-            'Seaside Pack': {},
-            'Crazy Pack': {}
+            'House Pack': {
+                '🏠': {
+                    common: ['Cozy Home', 'Sweet House', 'Little Place', 'Warm Cottage'],
+                    uncommon: ['Family Manor', 'Grand Estate', 'Noble House', 'Fine Dwelling'],
+                    rare: ['Mansion Supreme', 'Palace Minor', 'Luxury Villa', 'Royal Residence'],
+                    epic: ['Enchanted Castle', 'Magic Manor', 'Power Palace', 'Supreme Estate'],
+                    legendary: ['Legendary Fortress', 'Eternal Manor', 'Celestial Palace', 'Divine Estate'],
+                    ancient: ['Primordial Home', 'First Shelter', 'Dawn Dwelling', 'Origin House'],
+                    extreme: ['Reality Palace', 'Dimensional Manor', 'Void Estate', 'Cosmic Home'],
+                    mythic: ['Universal Palace', 'Infinite Manor', 'Creation\'s House', 'Eternal Dwelling'],
+                    honorable: ['Sacred Home', 'Holy Palace', 'Divine Manor', 'Blessed Estate'],
+                    'master-class': ['Supreme Castle', 'Perfect Palace', 'Ultimate Manor', 'Absolute Home'],
+                    insane: ['Beyond Structure', 'Impossible House', 'The Unknowable Palace', 'Pure Shelter'],
+                    victorious: ['Never Fallen', 'Eternal Fortress', 'Unbreached Palace', 'Supreme Stronghold']
+                },
+                '🏰': {
+                    common: ['Castle', 'Keep', 'Fort', 'Tower'],
+                    uncommon: ['Knight\'s Castle', 'Royal Keep', 'Stronghold', 'Grand Fort'],
+                    rare: ['Legendary Castle', 'Dragon Keep', 'Sky Fortress', 'War Palace'],
+                    epic: ['Mythical Citadel', 'Eternal Stronghold', 'Imperial Castle', 'Supreme Keep'],
+                    legendary: ['Camelot Reborn', 'Valhalla Gate', 'Olympus Castle', 'Asgard Keep'],
+                    ancient: ['First Castle', 'Primordial Fortress', 'Dawn Keep', 'Origin Citadel'],
+                    extreme: ['Reality Fortress', 'Dimensional Castle', 'Void Citadel', 'Cosmic Keep'],
+                    mythic: ['Universal Castle', 'Infinite Fortress', 'Creation\'s Keep', 'Eternal Citadel'],
+                    honorable: ['Sacred Castle', 'Holy Fortress', 'Divine Keep', 'Blessed Citadel'],
+                    'master-class': ['Supreme Fortress', 'Perfect Castle', 'Ultimate Keep', 'Absolute Citadel'],
+                    insane: ['Beyond Defense', 'Impossible Castle', 'The Impregnable', 'Pure Fortress'],
+                    victorious: ['Never Conquered', 'Eternal Bastion', 'Undefeated Keep', 'Supreme Castle']
+                },
+                '🏛️': {
+                    common: ['Temple', 'Shrine', 'Monument', 'Pillar'],
+                    uncommon: ['Grand Temple', 'Sacred Shrine', 'Holy Monument', 'Divine Pillar'],
+                    rare: ['Ancient Temple', 'Mystic Shrine', 'Power Monument', 'Sacred Pillar'],
+                    epic: ['God\'s Temple', 'Eternal Shrine', 'Mythic Monument', 'Celestial Pillar'],
+                    legendary: ['Pantheon', 'Zeus\'s Temple', 'Apollo\'s Shrine', 'Athena\'s Monument'],
+                    ancient: ['First Temple', 'Primordial Shrine', 'Dawn Monument', 'Origin Pillar'],
+                    extreme: ['Reality Temple', 'Dimensional Shrine', 'Void Monument', 'Cosmic Pillar'],
+                    mythic: ['Universal Temple', 'Infinite Shrine', 'Creation\'s Monument', 'Eternal Pillar'],
+                    honorable: ['Sacred Temple', 'Holy Shrine', 'Divine Monument', 'Blessed Pillar'],
+                    'master-class': ['Supreme Temple', 'Perfect Shrine', 'Ultimate Monument', 'Absolute Pillar'],
+                    insane: ['Beyond Worship', 'Impossible Temple', 'The Incomprehensible', 'Pure Divinity'],
+                    victorious: ['Never Desecrated', 'Eternal Temple', 'Undefiled Shrine', 'Supreme Monument']
+                },
+                '🗿': {
+                    common: ['Stone Head', 'Moai', 'Island Statue', 'Rock Face'],
+                    uncommon: ['Ancient Moai', 'Great Stone', 'Sacred Head', 'Mystic Statue'],
+                    rare: ['Elder Moai', 'Power Stone', 'Wisdom Head', 'Guardian Statue'],
+                    epic: ['Legendary Moai', 'Eternal Stone', 'Mythic Head', 'Supreme Statue'],
+                    legendary: ['Easter Island King', 'Ancient Guardian', 'Stone God', 'Moai Emperor'],
+                    ancient: ['First Stone', 'Primordial Moai', 'Dawn Head', 'Origin Statue'],
+                    extreme: ['Reality Stone', 'Dimensional Moai', 'Void Head', 'Cosmic Statue'],
+                    mythic: ['Universal Stone', 'Infinite Moai', 'Creation\'s Head', 'Eternal Statue'],
+                    honorable: ['Sacred Stone', 'Holy Moai', 'Divine Head', 'Blessed Statue'],
+                    'master-class': ['Supreme Moai', 'Perfect Stone', 'Ultimate Head', 'Absolute Statue'],
+                    insane: ['Beyond Stone', 'Impossible Moai', 'The Eternal Watcher', 'Pure Monument'],
+                    victorious: ['Never Moved', 'Eternal Guardian', 'Unshaken Moai', 'Supreme Stone']
+                },
+                '🕌': {
+                    common: ['Mosque', 'Minaret', 'Dome', 'Prayer Hall'],
+                    uncommon: ['Grand Mosque', 'Golden Minaret', 'Sacred Dome', 'Holy Hall'],
+                    rare: ['Royal Mosque', 'Celestial Minaret', 'Divine Dome', 'Power Hall'],
+                    epic: ['Sultan\'s Mosque', 'Eternal Minaret', 'Mythic Dome', 'Supreme Hall'],
+                    legendary: ['Taj Mahal Spirit', 'Alhambra Soul', 'Blue Mosque', 'Golden Palace'],
+                    ancient: ['First Mosque', 'Primordial Minaret', 'Dawn Dome', 'Origin Hall'],
+                    extreme: ['Reality Mosque', 'Dimensional Minaret', 'Void Dome', 'Cosmic Hall'],
+                    mythic: ['Universal Mosque', 'Infinite Minaret', 'Creation\'s Dome', 'Eternal Hall'],
+                    honorable: ['Sacred Mosque', 'Holy Minaret', 'Divine Dome', 'Blessed Hall'],
+                    'master-class': ['Supreme Mosque', 'Perfect Minaret', 'Ultimate Dome', 'Absolute Hall'],
+                    insane: ['Beyond Prayer', 'Impossible Mosque', 'The Transcendent', 'Pure Sanctuary'],
+                    victorious: ['Never Silenced', 'Eternal Call', 'Unending Prayer', 'Supreme Sanctuary']
+                },
+                '🌐': {
+                    common: ['Globe', 'World', 'Planet', 'Sphere'],
+                    uncommon: ['Great Globe', 'Wide World', 'Blue Planet', 'Power Sphere'],
+                    rare: ['Master Globe', 'Connected World', 'Network Planet', 'Data Sphere'],
+                    epic: ['Internet Globe', 'Digital World', 'Cyber Planet', 'Virtual Sphere'],
+                    legendary: ['World Wide Web', 'Global Network', 'Universal Connection', 'Infinite Data'],
+                    ancient: ['First Network', 'Primordial Web', 'Dawn Connection', 'Origin Globe'],
+                    extreme: ['Reality Network', 'Dimensional Web', 'Void Connection', 'Cosmic Globe'],
+                    mythic: ['Universal Network', 'Infinite Web', 'Creation\'s Globe', 'Eternal Connection'],
+                    honorable: ['Sacred Globe', 'Holy Network', 'Divine Web', 'Blessed Connection'],
+                    'master-class': ['Supreme Network', 'Perfect Globe', 'Ultimate Web', 'Absolute Connection'],
+                    insane: ['Beyond Data', 'Impossible Network', 'The Omnipresent', 'Pure Information'],
+                    victorious: ['Never Offline', 'Eternal Network', 'Unbroken Connection', 'Supreme Globe']
+                }
+            },
+            'Fire Monster Pack': {
+                '🔥': {
+                    common: ['Flame', 'Blaze', 'Ember', 'Spark'],
+                    uncommon: ['Fireball', 'Inferno', 'Wildfire', 'Burn'],
+                    rare: ['Fire Storm', 'Lava Flow', 'Heat Wave', 'Burning Fury'],
+                    epic: ['Inferno Lord', 'Flame Emperor', 'Blaze King', 'Fire God'],
+                    legendary: ['Eternal Flame', 'Phoenix Fire', 'Prometheus\'s Gift', 'Solar Flare'],
+                    ancient: ['First Flame', 'Primordial Fire', 'Dawn Blaze', 'Origin Heat'],
+                    extreme: ['Reality Burn', 'Dimensional Fire', 'Void Flame', 'Cosmic Inferno'],
+                    mythic: ['Universal Fire', 'Infinite Blaze', 'Creation\'s Flame', 'Eternal Heat'],
+                    honorable: ['Sacred Fire', 'Holy Flame', 'Divine Blaze', 'Blessed Heat'],
+                    'master-class': ['Supreme Inferno', 'Perfect Flame', 'Ultimate Blaze', 'Absolute Fire'],
+                    insane: ['Beyond Heat', 'Impossible Fire', 'The Unquenchable', 'Pure Energy'],
+                    victorious: ['Never Extinguished', 'Eternal Burn', 'Unending Flame', 'Supreme Fire']
+                },
+                '🌋': {
+                    common: ['Volcano', 'Lava', 'Magma', 'Eruption'],
+                    uncommon: ['Active Volcano', 'Lava Flow', 'Magma Pool', 'Great Eruption'],
+                    rare: ['Mount Doom', 'Lava Lord', 'Magma King', 'Eruption Master'],
+                    epic: ['Volcanic God', 'Lava Emperor', 'Magma Sovereign', 'Eruption Supreme'],
+                    legendary: ['Mount Vesuvius', 'Krakatoa Spirit', 'Mount Etna', 'Ring of Fire'],
+                    ancient: ['First Volcano', 'Primordial Magma', 'Dawn Eruption', 'Origin Lava'],
+                    extreme: ['Reality Volcano', 'Dimensional Magma', 'Void Eruption', 'Cosmic Lava'],
+                    mythic: ['Universal Volcano', 'Infinite Magma', 'Creation\'s Eruption', 'Eternal Lava'],
+                    honorable: ['Sacred Volcano', 'Holy Magma', 'Divine Eruption', 'Blessed Lava'],
+                    'master-class': ['Supreme Volcano', 'Perfect Magma', 'Ultimate Eruption', 'Absolute Lava'],
+                    insane: ['Beyond Eruption', 'Impossible Volcano', 'The Unstoppable', 'Pure Destruction'],
+                    victorious: ['Never Dormant', 'Eternal Eruption', 'Endless Lava', 'Supreme Volcano']
+                },
+                '🐉': {
+                    common: ['Dragon', 'Drake', 'Wyrm', 'Wyvern'],
+                    uncommon: ['Fire Dragon', 'Red Drake', 'Flame Wyrm', 'Burning Wyvern'],
+                    rare: ['Crimson Dragon', 'Inferno Drake', 'Blaze Wyrm', 'Volcanic Wyvern'],
+                    epic: ['Dragon Lord', 'Ancient Drake', 'Elder Wyrm', 'Supreme Wyvern'],
+                    legendary: ['Smaug', 'Drogon', 'Balerion', 'Alduin'],
+                    ancient: ['First Dragon', 'Primordial Wyrm', 'Dawn Drake', 'Origin Dragon'],
+                    extreme: ['Reality Dragon', 'Dimensional Wyrm', 'Void Drake', 'Cosmic Dragon'],
+                    mythic: ['Universal Dragon', 'Infinite Wyrm', 'Creation\'s Drake', 'Eternal Dragon'],
+                    honorable: ['Sacred Dragon', 'Holy Wyrm', 'Divine Drake', 'Blessed Dragon'],
+                    'master-class': ['Supreme Dragon', 'Perfect Wyrm', 'Ultimate Drake', 'Absolute Dragon'],
+                    insane: ['Beyond Dragon', 'Impossible Wyrm', 'The Legendary Beast', 'Pure Power'],
+                    victorious: ['Never Slain', 'Eternal Dragon', 'Undefeated Wyrm', 'Supreme Drake']
+                },
+                '☄️': {
+                    common: ['Comet', 'Meteor', 'Asteroid', 'Space Rock'],
+                    uncommon: ['Great Comet', 'Meteor Shower', 'Asteroid Storm', 'Cosmic Rock'],
+                    rare: ['Fire Comet', 'Blazing Meteor', 'Burning Asteroid', 'Flaming Rock'],
+                    epic: ['Extinction Event', 'Apocalypse Comet', 'Doom Meteor', 'Armageddon Rock'],
+                    legendary: ['Halley\'s Comet', 'Chicxulub', 'Tunguska Event', 'Celestial Impact'],
+                    ancient: ['First Comet', 'Primordial Meteor', 'Dawn Asteroid', 'Origin Impact'],
+                    extreme: ['Reality Comet', 'Dimensional Meteor', 'Void Asteroid', 'Cosmic Impact'],
+                    mythic: ['Universal Comet', 'Infinite Meteor', 'Creation\'s Impact', 'Eternal Asteroid'],
+                    honorable: ['Sacred Comet', 'Holy Meteor', 'Divine Asteroid', 'Blessed Impact'],
+                    'master-class': ['Supreme Comet', 'Perfect Meteor', 'Ultimate Asteroid', 'Absolute Impact'],
+                    insane: ['Beyond Velocity', 'Impossible Comet', 'The Inevitable', 'Pure Destruction'],
+                    victorious: ['Never Missed', 'Eternal Impact', 'Unstoppable Comet', 'Supreme Meteor']
+                },
+                '💥': {
+                    common: ['Boom', 'Bang', 'Blast', 'Explosion'],
+                    uncommon: ['Big Boom', 'Great Bang', 'Power Blast', 'Super Explosion'],
+                    rare: ['Mega Boom', 'Ultra Bang', 'Hyper Blast', 'Nuclear Explosion'],
+                    epic: ['Cosmic Boom', 'Stellar Bang', 'Galaxy Blast', 'Universe Explosion'],
+                    legendary: ['Big Bang Echo', 'Supernova', 'Gamma Ray Burst', 'Celestial Explosion'],
+                    ancient: ['First Explosion', 'Primordial Bang', 'Dawn Blast', 'Origin Boom'],
+                    extreme: ['Reality Explosion', 'Dimensional Bang', 'Void Blast', 'Cosmic Boom'],
+                    mythic: ['Universal Explosion', 'Infinite Bang', 'Creation\'s Blast', 'Eternal Boom'],
+                    honorable: ['Sacred Explosion', 'Holy Bang', 'Divine Blast', 'Blessed Boom'],
+                    'master-class': ['Supreme Explosion', 'Perfect Bang', 'Ultimate Blast', 'Absolute Boom'],
+                    insane: ['Beyond Explosion', 'Impossible Bang', 'The Uncontainable', 'Pure Energy'],
+                    victorious: ['Never Stopped', 'Eternal Explosion', 'Endless Bang', 'Supreme Blast']
+                },
+                '⚡': {
+                    common: ['Lightning', 'Thunder', 'Bolt', 'Shock'],
+                    uncommon: ['Thunder Bolt', 'Lightning Strike', 'Power Shock', 'Electric Blast'],
+                    rare: ['Storm Lightning', 'Mega Thunder', 'Chain Bolt', 'Plasma Shock'],
+                    epic: ['Thunder God', 'Lightning Lord', 'Storm Emperor', 'Electric Supreme'],
+                    legendary: ['Zeus\'s Bolt', 'Thor\'s Hammer', 'Raijin\'s Thunder', 'Storm Bringer'],
+                    ancient: ['First Lightning', 'Primordial Thunder', 'Dawn Bolt', 'Origin Storm'],
+                    extreme: ['Reality Lightning', 'Dimensional Thunder', 'Void Bolt', 'Cosmic Storm'],
+                    mythic: ['Universal Lightning', 'Infinite Thunder', 'Creation\'s Bolt', 'Eternal Storm'],
+                    honorable: ['Sacred Lightning', 'Holy Thunder', 'Divine Bolt', 'Blessed Storm'],
+                    'master-class': ['Supreme Lightning', 'Perfect Thunder', 'Ultimate Bolt', 'Absolute Storm'],
+                    insane: ['Beyond Speed', 'Impossible Lightning', 'The Instant Strike', 'Pure Electricity'],
+                    victorious: ['Never Grounded', 'Eternal Lightning', 'Endless Thunder', 'Supreme Bolt']
+                }
+            },
+            'Ice Monster Pack': {
+                '❄️': {
+                    common: ['Snowflake', 'Ice', 'Frost', 'Crystal'],
+                    uncommon: ['Winter Ice', 'Deep Frost', 'Ice Crystal', 'Frozen Star'],
+                    rare: ['Eternal Ice', 'Absolute Zero', 'Frozen Heart', 'Ice Storm'],
+                    epic: ['Ice Lord', 'Frost King', 'Winter Emperor', 'Frozen God'],
+                    legendary: ['Ice Nine', 'Eternal Winter', 'Frost Giant', 'Frozen Eternity'],
+                    ancient: ['First Frost', 'Primordial Ice', 'Dawn Winter', 'Origin Cold'],
+                    extreme: ['Reality Freeze', 'Dimensional Ice', 'Void Frost', 'Cosmic Winter'],
+                    mythic: ['Universal Ice', 'Infinite Frost', 'Creation\'s Winter', 'Eternal Freeze'],
+                    honorable: ['Sacred Ice', 'Holy Frost', 'Divine Winter', 'Blessed Cold'],
+                    'master-class': ['Supreme Ice', 'Perfect Frost', 'Ultimate Winter', 'Absolute Zero'],
+                    insane: ['Beyond Cold', 'Impossible Ice', 'The Unmelting', 'Pure Freeze'],
+                    victorious: ['Never Thawed', 'Eternal Ice', 'Endless Winter', 'Supreme Frost']
+                },
+                '⛄': {
+                    common: ['Snowman', 'Frosty', 'Ice Man', 'Snow Friend'],
+                    uncommon: ['Big Snowman', 'Jolly Frosty', 'Ice Guardian', 'Winter Friend'],
+                    rare: ['Frost Giant', 'Ice Titan', 'Snow Colossus', 'Winter Guardian'],
+                    epic: ['Eternal Snowman', 'Frost Emperor', 'Ice Sovereign', 'Winter King'],
+                    legendary: ['Frosty the Great', 'Jack Frost', 'Ice Giant', 'Winter Spirit'],
+                    ancient: ['First Snowman', 'Primordial Frost', 'Dawn Ice', 'Origin Winter'],
+                    extreme: ['Reality Snowman', 'Dimensional Frost', 'Void Ice', 'Cosmic Winter'],
+                    mythic: ['Universal Snowman', 'Infinite Frost', 'Creation\'s Ice', 'Eternal Winter'],
+                    honorable: ['Sacred Snowman', 'Holy Frost', 'Divine Ice', 'Blessed Winter'],
+                    'master-class': ['Supreme Snowman', 'Perfect Frost', 'Ultimate Ice', 'Absolute Winter'],
+                    insane: ['Beyond Snow', 'Impossible Frost', 'The Eternal Cold', 'Pure Ice'],
+                    victorious: ['Never Melted', 'Eternal Snowman', 'Unthawed Frost', 'Supreme Ice']
+                },
+                '🧊': {
+                    common: ['Ice Cube', 'Block', 'Freeze', 'Chill'],
+                    uncommon: ['Big Cube', 'Ice Block', 'Deep Freeze', 'Cold Chill'],
+                    rare: ['Crystal Cube', 'Frozen Block', 'Ice Prison', 'Frozen Tomb'],
+                    epic: ['Eternal Cube', 'Ice Fortress', 'Frozen Palace', 'Crystal Castle'],
+                    legendary: ['Glacier Block', 'Arctic Cube', 'Antarctic Ice', 'Polar Freeze'],
+                    ancient: ['First Ice', 'Primordial Block', 'Dawn Freeze', 'Origin Chill'],
+                    extreme: ['Reality Cube', 'Dimensional Ice', 'Void Block', 'Cosmic Freeze'],
+                    mythic: ['Universal Cube', 'Infinite Ice', 'Creation\'s Block', 'Eternal Freeze'],
+                    honorable: ['Sacred Cube', 'Holy Ice', 'Divine Block', 'Blessed Freeze'],
+                    'master-class': ['Supreme Cube', 'Perfect Ice', 'Ultimate Block', 'Absolute Freeze'],
+                    insane: ['Beyond Solid', 'Impossible Ice', 'The Unbreakable', 'Pure Crystal'],
+                    victorious: ['Never Broken', 'Eternal Cube', 'Unmelted Ice', 'Supreme Block']
+                },
+                '💎': {
+                    common: ['Diamond', 'Gem', 'Jewel', 'Crystal'],
+                    uncommon: ['Blue Diamond', 'Ice Gem', 'Frost Jewel', 'Clear Crystal'],
+                    rare: ['Perfect Diamond', 'Royal Gem', 'Crown Jewel', 'Master Crystal'],
+                    epic: ['Legendary Diamond', 'Supreme Gem', 'Divine Jewel', 'Eternal Crystal'],
+                    legendary: ['Hope Diamond', 'Koh-i-Noor', 'Star of India', 'Blue Heart'],
+                    ancient: ['First Diamond', 'Primordial Gem', 'Dawn Jewel', 'Origin Crystal'],
+                    extreme: ['Reality Diamond', 'Dimensional Gem', 'Void Jewel', 'Cosmic Crystal'],
+                    mythic: ['Universal Diamond', 'Infinite Gem', 'Creation\'s Jewel', 'Eternal Crystal'],
+                    honorable: ['Sacred Diamond', 'Holy Gem', 'Divine Jewel', 'Blessed Crystal'],
+                    'master-class': ['Supreme Diamond', 'Perfect Gem', 'Ultimate Jewel', 'Absolute Crystal'],
+                    insane: ['Beyond Value', 'Impossible Diamond', 'The Priceless', 'Pure Perfection'],
+                    victorious: ['Never Stolen', 'Eternal Diamond', 'Uncut Gem', 'Supreme Jewel']
+                },
+                '🔷': {
+                    common: ['Blue Gem', 'Sapphire', 'Azure', 'Blue Stone'],
+                    uncommon: ['Deep Blue', 'Ocean Gem', 'Sky Sapphire', 'Royal Azure'],
+                    rare: ['Perfect Sapphire', 'Star Blue', 'Master Gem', 'Divine Azure'],
+                    epic: ['Legendary Sapphire', 'Eternal Blue', 'Supreme Gem', 'Celestial Azure'],
+                    legendary: ['Blue Star', 'Ocean Heart', 'Sky Diamond', 'Sapphire Soul'],
+                    ancient: ['First Blue', 'Primordial Sapphire', 'Dawn Gem', 'Origin Azure'],
+                    extreme: ['Reality Sapphire', 'Dimensional Blue', 'Void Gem', 'Cosmic Azure'],
+                    mythic: ['Universal Sapphire', 'Infinite Blue', 'Creation\'s Gem', 'Eternal Azure'],
+                    honorable: ['Sacred Sapphire', 'Holy Blue', 'Divine Gem', 'Blessed Azure'],
+                    'master-class': ['Supreme Sapphire', 'Perfect Blue', 'Ultimate Gem', 'Absolute Azure'],
+                    insane: ['Beyond Blue', 'Impossible Sapphire', 'The Infinite Depth', 'Pure Ocean'],
+                    victorious: ['Never Faded', 'Eternal Sapphire', 'Endless Blue', 'Supreme Gem']
+                },
+                '💠': {
+                    common: ['Diamond Shape', 'Blue Diamond', 'Gem Star', 'Crystal Star'],
+                    uncommon: ['Great Shape', 'Perfect Diamond', 'Royal Star', 'Supreme Crystal'],
+                    rare: ['Master Shape', 'Legendary Diamond', 'Divine Star', 'Eternal Crystal'],
+                    epic: ['Supreme Shape', 'God Diamond', 'Celestial Star', 'Infinite Crystal'],
+                    legendary: ['Perfect Form', 'Ultimate Shape', 'Divine Geometry', 'Sacred Pattern'],
+                    ancient: ['First Pattern', 'Primordial Shape', 'Dawn Form', 'Origin Geometry'],
+                    extreme: ['Reality Pattern', 'Dimensional Shape', 'Void Form', 'Cosmic Geometry'],
+                    mythic: ['Universal Pattern', 'Infinite Shape', 'Creation\'s Form', 'Eternal Geometry'],
+                    honorable: ['Sacred Pattern', 'Holy Shape', 'Divine Form', 'Blessed Geometry'],
+                    'master-class': ['Supreme Pattern', 'Perfect Shape', 'Ultimate Form', 'Absolute Geometry'],
+                    insane: ['Beyond Shape', 'Impossible Pattern', 'The Perfect Form', 'Pure Symmetry'],
+                    victorious: ['Never Distorted', 'Eternal Pattern', 'Perfect Shape', 'Supreme Form']
+                }
+            },
+            'Tropic Pack': {
+                '🌴': {
+                    common: ['Palm Tree', 'Coconut Tree', 'Island Tree', 'Beach Palm'],
+                    uncommon: ['Tall Palm', 'Royal Tree', 'Paradise Palm', 'Golden Tree'],
+                    rare: ['Ancient Palm', 'Mystic Tree', 'Tropical Lord', 'Beach King'],
+                    epic: ['Eternal Palm', 'Paradise Tree', 'Island Emperor', 'Tropical God'],
+                    legendary: ['World Tree', 'Yggdrasil Palm', 'Eden Tree', 'Paradise Guardian'],
+                    ancient: ['First Tree', 'Primordial Palm', 'Dawn Green', 'Origin Life'],
+                    extreme: ['Reality Tree', 'Dimensional Palm', 'Void Green', 'Cosmic Life'],
+                    mythic: ['Universal Tree', 'Infinite Palm', 'Creation\'s Green', 'Eternal Life'],
+                    honorable: ['Sacred Tree', 'Holy Palm', 'Divine Green', 'Blessed Life'],
+                    'master-class': ['Supreme Tree', 'Perfect Palm', 'Ultimate Green', 'Absolute Life'],
+                    insane: ['Beyond Nature', 'Impossible Tree', 'The Eternal Green', 'Pure Life'],
+                    victorious: ['Never Withered', 'Eternal Tree', 'Undying Palm', 'Supreme Life']
+                },
+                '🦜': {
+                    common: ['Parrot', 'Macaw', 'Bird', 'Tropical Bird'],
+                    uncommon: ['Rainbow Parrot', 'Colorful Macaw', 'Exotic Bird', 'Island Flyer'],
+                    rare: ['Royal Parrot', 'Golden Macaw', 'Paradise Bird', 'Tropical King'],
+                    epic: ['Legendary Parrot', 'Mythic Macaw', 'Divine Bird', 'Celestial Flyer'],
+                    legendary: ['Phoenix Parrot', 'Rainbow King', 'Paradise Lord', 'Tropical Emperor'],
+                    ancient: ['First Bird', 'Primordial Parrot', 'Dawn Flyer', 'Origin Wings'],
+                    extreme: ['Reality Bird', 'Dimensional Parrot', 'Void Flyer', 'Cosmic Wings'],
+                    mythic: ['Universal Bird', 'Infinite Parrot', 'Creation\'s Flyer', 'Eternal Wings'],
+                    honorable: ['Sacred Parrot', 'Holy Bird', 'Divine Flyer', 'Blessed Wings'],
+                    'master-class': ['Supreme Parrot', 'Perfect Bird', 'Ultimate Flyer', 'Absolute Wings'],
+                    insane: ['Beyond Flight', 'Impossible Bird', 'The Ever-Singing', 'Pure Freedom'],
+                    victorious: ['Never Caged', 'Eternal Flyer', 'Free Forever', 'Supreme Parrot']
+                },
+                '🌺': {
+                    common: ['Hibiscus', 'Flower', 'Bloom', 'Blossom'],
+                    uncommon: ['Red Hibiscus', 'Island Flower', 'Tropical Bloom', 'Paradise Blossom'],
+                    rare: ['Royal Hibiscus', 'Golden Flower', 'Sacred Bloom', 'Divine Blossom'],
+                    epic: ['Eternal Hibiscus', 'Mythic Flower', 'Supreme Bloom', 'Celestial Blossom'],
+                    legendary: ['Paradise Flower', 'Eden Bloom', 'Garden of Gods', 'Eternal Beauty'],
+                    ancient: ['First Flower', 'Primordial Bloom', 'Dawn Blossom', 'Origin Beauty'],
+                    extreme: ['Reality Flower', 'Dimensional Bloom', 'Void Blossom', 'Cosmic Beauty'],
+                    mythic: ['Universal Flower', 'Infinite Bloom', 'Creation\'s Blossom', 'Eternal Beauty'],
+                    honorable: ['Sacred Flower', 'Holy Bloom', 'Divine Blossom', 'Blessed Beauty'],
+                    'master-class': ['Supreme Flower', 'Perfect Bloom', 'Ultimate Blossom', 'Absolute Beauty'],
+                    insane: ['Beyond Beauty', 'Impossible Flower', 'The Eternal Bloom', 'Pure Grace'],
+                    victorious: ['Never Wilted', 'Eternal Flower', 'Endless Bloom', 'Supreme Beauty']
+                },
+                '🦋': {
+                    common: ['Butterfly', 'Flutter', 'Wings', 'Beauty'],
+                    uncommon: ['Blue Butterfly', 'Monarch', 'Rainbow Wings', 'Graceful Flutter'],
+                    rare: ['Royal Butterfly', 'Golden Monarch', 'Paradise Wings', 'Divine Flutter'],
+                    epic: ['Legendary Butterfly', 'Mythic Monarch', 'Celestial Wings', 'Supreme Flutter'],
+                    legendary: ['Morpho Blue', 'Butterfly Effect', 'Chaos Wings', 'Destiny Flutter'],
+                    ancient: ['First Butterfly', 'Primordial Wings', 'Dawn Flutter', 'Origin Beauty'],
+                    extreme: ['Reality Butterfly', 'Dimensional Wings', 'Void Flutter', 'Cosmic Beauty'],
+                    mythic: ['Universal Butterfly', 'Infinite Wings', 'Creation\'s Flutter', 'Eternal Beauty'],
+                    honorable: ['Sacred Butterfly', 'Holy Wings', 'Divine Flutter', 'Blessed Beauty'],
+                    'master-class': ['Supreme Butterfly', 'Perfect Wings', 'Ultimate Flutter', 'Absolute Beauty'],
+                    insane: ['Beyond Change', 'Impossible Butterfly', 'The Transformer', 'Pure Metamorphosis'],
+                    victorious: ['Never Caught', 'Eternal Wings', 'Endless Flight', 'Supreme Butterfly']
+                },
+                '🌿': {
+                    common: ['Herb', 'Leaf', 'Plant', 'Green'],
+                    uncommon: ['Fresh Herb', 'Magic Leaf', 'Power Plant', 'Deep Green'],
+                    rare: ['Healing Herb', 'Sacred Leaf', 'Ancient Plant', 'Mystic Green'],
+                    epic: ['Legendary Herb', 'Divine Leaf', 'Eternal Plant', 'Supreme Green'],
+                    legendary: ['Elixir Herb', 'Phoenix Leaf', 'Tree of Life', 'Garden of Eden'],
+                    ancient: ['First Plant', 'Primordial Herb', 'Dawn Leaf', 'Origin Green'],
+                    extreme: ['Reality Herb', 'Dimensional Leaf', 'Void Plant', 'Cosmic Green'],
+                    mythic: ['Universal Herb', 'Infinite Leaf', 'Creation\'s Plant', 'Eternal Green'],
+                    honorable: ['Sacred Herb', 'Holy Leaf', 'Divine Plant', 'Blessed Green'],
+                    'master-class': ['Supreme Herb', 'Perfect Leaf', 'Ultimate Plant', 'Absolute Green'],
+                    insane: ['Beyond Life', 'Impossible Herb', 'The Eternal Growth', 'Pure Nature'],
+                    victorious: ['Never Withered', 'Eternal Herb', 'Endless Growth', 'Supreme Plant']
+                },
+                '🌍': {
+                    common: ['Earth', 'World', 'Globe', 'Planet'],
+                    uncommon: ['Blue Earth', 'Living World', 'Great Globe', 'Home Planet'],
+                    rare: ['Mother Earth', 'Gaia', 'Terra', 'World Soul'],
+                    epic: ['Eternal Earth', 'Living Planet', 'Divine World', 'Sacred Globe'],
+                    legendary: ['Gaia\'s Heart', 'Terra Prime', 'World Spirit', 'Planet Soul'],
+                    ancient: ['First World', 'Primordial Earth', 'Dawn Planet', 'Origin Life'],
+                    extreme: ['Reality Earth', 'Dimensional World', 'Void Planet', 'Cosmic Home'],
+                    mythic: ['Universal Earth', 'Infinite World', 'Creation\'s Planet', 'Eternal Home'],
+                    honorable: ['Sacred Earth', 'Holy World', 'Divine Planet', 'Blessed Home'],
+                    'master-class': ['Supreme Earth', 'Perfect World', 'Ultimate Planet', 'Absolute Home'],
+                    insane: ['Beyond Earth', 'Impossible World', 'The Living Planet', 'Pure Life'],
+                    victorious: ['Never Destroyed', 'Eternal Earth', 'Endless Life', 'Supreme World']
+                }
+            },
+            'Seaside Pack': {
+                '🌊': {
+                    common: ['Wave', 'Water', 'Tide', 'Surf'],
+                    uncommon: ['Big Wave', 'Deep Water', 'High Tide', 'Power Surf'],
+                    rare: ['Tidal Wave', 'Ocean Force', 'Mega Tide', 'Storm Surf'],
+                    epic: ['Tsunami', 'Ocean Lord', 'Tidal Emperor', 'Wave God'],
+                    legendary: ['Poseidon\'s Wave', 'Neptune\'s Tide', 'Ocean King', 'Eternal Surf'],
+                    ancient: ['First Wave', 'Primordial Ocean', 'Dawn Tide', 'Origin Water'],
+                    extreme: ['Reality Wave', 'Dimensional Ocean', 'Void Tide', 'Cosmic Water'],
+                    mythic: ['Universal Wave', 'Infinite Ocean', 'Creation\'s Tide', 'Eternal Water'],
+                    honorable: ['Sacred Wave', 'Holy Ocean', 'Divine Tide', 'Blessed Water'],
+                    'master-class': ['Supreme Wave', 'Perfect Ocean', 'Ultimate Tide', 'Absolute Water'],
+                    insane: ['Beyond Flow', 'Impossible Wave', 'The Endless Ocean', 'Pure Liquid'],
+                    victorious: ['Never Calmed', 'Eternal Wave', 'Endless Tide', 'Supreme Ocean']
+                },
+                '🦈': {
+                    common: ['Shark', 'Great White', 'Predator', 'Hunter'],
+                    uncommon: ['Mega Shark', 'Tiger Shark', 'Bull Shark', 'Hammerhead'],
+                    rare: ['Legendary Shark', 'King Predator', 'Ocean Hunter', 'Deep Terror'],
+                    epic: ['Megalodon', 'Shark God', 'Apex Predator', 'Ocean Emperor'],
+                    legendary: ['Ancient Megalodon', 'Leviathan Shark', 'Sea Monster', 'Ocean Tyrant'],
+                    ancient: ['First Predator', 'Primordial Shark', 'Dawn Hunter', 'Origin Terror'],
+                    extreme: ['Reality Shark', 'Dimensional Predator', 'Void Hunter', 'Cosmic Terror'],
+                    mythic: ['Universal Shark', 'Infinite Predator', 'Creation\'s Hunter', 'Eternal Terror'],
+                    honorable: ['Sacred Shark', 'Holy Predator', 'Divine Hunter', 'Blessed Terror'],
+                    'master-class': ['Supreme Shark', 'Perfect Predator', 'Ultimate Hunter', 'Absolute Terror'],
+                    insane: ['Beyond Hunger', 'Impossible Shark', 'The Unstoppable', 'Pure Predator'],
+                    victorious: ['Never Escaped', 'Eternal Hunter', 'Undefeated Shark', 'Supreme Predator']
+                },
+                '🐙': {
+                    common: ['Octopus', 'Squid', 'Tentacles', 'Eight Arms'],
+                    uncommon: ['Giant Octopus', 'Clever Squid', 'Strong Tentacles', 'Master Arms'],
+                    rare: ['Kraken Jr', 'Ocean Mind', 'Deep Dweller', 'Tentacle Lord'],
+                    epic: ['Legendary Octopus', 'Kraken', 'Cthulhu\'s Spawn', 'Deep God'],
+                    legendary: ['The Kraken', 'Cthulhu', 'Deep One', 'Ocean Nightmare'],
+                    ancient: ['First Octopus', 'Primordial Kraken', 'Dawn Terror', 'Origin Deep'],
+                    extreme: ['Reality Octopus', 'Dimensional Kraken', 'Void Tentacles', 'Cosmic Horror'],
+                    mythic: ['Universal Octopus', 'Infinite Kraken', 'Creation\'s Terror', 'Eternal Deep'],
+                    honorable: ['Sacred Octopus', 'Holy Kraken', 'Divine Tentacles', 'Blessed Deep'],
+                    'master-class': ['Supreme Octopus', 'Perfect Kraken', 'Ultimate Tentacles', 'Absolute Deep'],
+                    insane: ['Beyond Comprehension', 'Impossible Octopus', 'The Unknowable', 'Pure Horror'],
+                    victorious: ['Never Released', 'Eternal Kraken', 'Undefeated Terror', 'Supreme Octopus']
+                },
+                '🔱': {
+                    common: ['Trident', 'Spear', 'Fork', 'Weapon'],
+                    uncommon: ['Sea Trident', 'Ocean Spear', 'Power Fork', 'Divine Weapon'],
+                    rare: ['Royal Trident', 'King\'s Spear', 'Sacred Fork', 'Legendary Weapon'],
+                    epic: ['Poseidon\'s Trident', 'Neptune\'s Spear', 'Ocean Fork', 'God Weapon'],
+                    legendary: ['Divine Trident', 'Eternal Spear', 'Supreme Fork', 'Ultimate Weapon'],
+                    ancient: ['First Trident', 'Primordial Spear', 'Dawn Fork', 'Origin Weapon'],
+                    extreme: ['Reality Trident', 'Dimensional Spear', 'Void Fork', 'Cosmic Weapon'],
+                    mythic: ['Universal Trident', 'Infinite Spear', 'Creation\'s Fork', 'Eternal Weapon'],
+                    honorable: ['Sacred Trident', 'Holy Spear', 'Divine Fork', 'Blessed Weapon'],
+                    'master-class': ['Supreme Trident', 'Perfect Spear', 'Ultimate Fork', 'Absolute Weapon'],
+                    insane: ['Beyond Power', 'Impossible Trident', 'The All-Piercing', 'Pure Force'],
+                    victorious: ['Never Broken', 'Eternal Trident', 'Unbreakable Spear', 'Supreme Weapon']
+                },
+                '⚓': {
+                    common: ['Anchor', 'Hook', 'Ship Anchor', 'Holder'],
+                    uncommon: ['Heavy Anchor', 'Strong Hook', 'Ship Holder', 'Sea Anchor'],
+                    rare: ['Royal Anchor', 'Golden Hook', 'Master Holder', 'Ocean Anchor'],
+                    epic: ['Legendary Anchor', 'Eternal Hook', 'Divine Holder', 'Supreme Anchor'],
+                    legendary: ['World Anchor', 'Reality Hook', 'Cosmic Holder', 'Universe Anchor'],
+                    ancient: ['First Anchor', 'Primordial Hook', 'Dawn Holder', 'Origin Weight'],
+                    extreme: ['Reality Anchor', 'Dimensional Hook', 'Void Holder', 'Cosmic Weight'],
+                    mythic: ['Universal Anchor', 'Infinite Hook', 'Creation\'s Holder', 'Eternal Weight'],
+                    honorable: ['Sacred Anchor', 'Holy Hook', 'Divine Holder', 'Blessed Weight'],
+                    'master-class': ['Supreme Anchor', 'Perfect Hook', 'Ultimate Holder', 'Absolute Weight'],
+                    insane: ['Beyond Heavy', 'Impossible Anchor', 'The Unmovable', 'Pure Stability'],
+                    victorious: ['Never Raised', 'Eternal Anchor', 'Unlifted Hook', 'Supreme Holder']
+                },
+                '🌀': {
+                    common: ['Whirlpool', 'Cyclone', 'Spiral', 'Vortex'],
+                    uncommon: ['Great Whirlpool', 'Strong Cyclone', 'Deep Spiral', 'Power Vortex'],
+                    rare: ['Mega Whirlpool', 'Storm Cyclone', 'Ocean Spiral', 'Maelstrom'],
+                    epic: ['Legendary Whirlpool', 'Divine Cyclone', 'Eternal Spiral', 'Supreme Vortex'],
+                    legendary: ['Charybdis', 'World Maelstrom', 'Cosmic Cyclone', 'Infinite Spiral'],
+                    ancient: ['First Whirlpool', 'Primordial Cyclone', 'Dawn Spiral', 'Origin Vortex'],
+                    extreme: ['Reality Whirlpool', 'Dimensional Cyclone', 'Void Spiral', 'Cosmic Vortex'],
+                    mythic: ['Universal Whirlpool', 'Infinite Cyclone', 'Creation\'s Spiral', 'Eternal Vortex'],
+                    honorable: ['Sacred Whirlpool', 'Holy Cyclone', 'Divine Spiral', 'Blessed Vortex'],
+                    'master-class': ['Supreme Whirlpool', 'Perfect Cyclone', 'Ultimate Spiral', 'Absolute Vortex'],
+                    insane: ['Beyond Spin', 'Impossible Whirlpool', 'The Endless Spiral', 'Pure Chaos'],
+                    victorious: ['Never Stopped', 'Eternal Whirlpool', 'Endless Cyclone', 'Supreme Vortex']
+                }
+            },
+            'Crazy Pack': {
+                '🤪': {
+                    common: ['Silly', 'Wacky', 'Goofy', 'Zany'],
+                    uncommon: ['Super Silly', 'Very Wacky', 'Ultra Goofy', 'Mega Zany'],
+                    rare: ['Chaos Bringer', 'Random Master', 'Unpredictable', 'Wild Card'],
+                    epic: ['Madness Incarnate', 'Chaos Lord', 'Insanity King', 'Random God'],
+                    legendary: ['The Mad Hatter', 'Joker Supreme', 'Chaos Eternal', 'Madness Itself'],
+                    ancient: ['First Chaos', 'Primordial Madness', 'Dawn Insanity', 'Origin Random'],
+                    extreme: ['Reality Breaker', 'Dimensional Madness', 'Void Chaos', 'Cosmic Insanity'],
+                    mythic: ['Universal Chaos', 'Infinite Madness', 'Creation\'s Insanity', 'Eternal Random'],
+                    honorable: ['Sacred Madness', 'Holy Chaos', 'Divine Insanity', 'Blessed Random'],
+                    'master-class': ['Supreme Chaos', 'Perfect Madness', 'Ultimate Insanity', 'Absolute Random'],
+                    insane: ['Beyond Sanity', 'Impossible Chaos', 'The Unknowable Mind', 'Pure Madness'],
+                    victorious: ['Never Predictable', 'Eternal Chaos', 'Endless Madness', 'Supreme Insanity']
+                },
+                '👽': {
+                    common: ['Alien', 'Visitor', 'Stranger', 'Outsider'],
+                    uncommon: ['Gray Alien', 'Space Visitor', 'Star Stranger', 'Cosmic Outsider'],
+                    rare: ['Advanced Alien', 'UFO Pilot', 'Galaxy Visitor', 'Space Master'],
+                    epic: ['Galactic Emperor', 'Alien Overlord', 'Space God', 'Cosmic Supreme'],
+                    legendary: ['Roswell Survivor', 'Area 51 Secret', 'First Contact', 'Star Traveler'],
+                    ancient: ['First Visitor', 'Primordial Alien', 'Dawn Stranger', 'Origin Outsider'],
+                    extreme: ['Reality Alien', 'Dimensional Visitor', 'Void Stranger', 'Cosmic Traveler'],
+                    mythic: ['Universal Alien', 'Infinite Visitor', 'Creation\'s Stranger', 'Eternal Outsider'],
+                    honorable: ['Sacred Alien', 'Holy Visitor', 'Divine Stranger', 'Blessed Outsider'],
+                    'master-class': ['Supreme Alien', 'Perfect Visitor', 'Ultimate Stranger', 'Absolute Outsider'],
+                    insane: ['Beyond Space', 'Impossible Alien', 'The Unknowable', 'Pure Unknown'],
+                    victorious: ['Never Caught', 'Eternal Visitor', 'Unproven Alien', 'Supreme Mystery']
+                },
+                '🤖': {
+                    common: ['Robot', 'Bot', 'Machine', 'Android'],
+                    uncommon: ['Smart Robot', 'AI Bot', 'Super Machine', 'Advanced Android'],
+                    rare: ['Mega Robot', 'Genius Bot', 'War Machine', 'Combat Android'],
+                    epic: ['Ultimate Robot', 'Supreme Bot', 'God Machine', 'Perfect Android'],
+                    legendary: ['Skynet', 'Ultron', 'HAL 9000', 'The Terminator'],
+                    ancient: ['First Machine', 'Primordial Robot', 'Dawn AI', 'Origin Android'],
+                    extreme: ['Reality Machine', 'Dimensional Robot', 'Void AI', 'Cosmic Android'],
+                    mythic: ['Universal Robot', 'Infinite Machine', 'Creation\'s AI', 'Eternal Android'],
+                    honorable: ['Sacred Robot', 'Holy Machine', 'Divine AI', 'Blessed Android'],
+                    'master-class': ['Supreme Robot', 'Perfect Machine', 'Ultimate AI', 'Absolute Android'],
+                    insane: ['Beyond Logic', 'Impossible Robot', 'The Singularity', 'Pure Intelligence'],
+                    victorious: ['Never Shutdown', 'Eternal Robot', 'Unbeaten Machine', 'Supreme AI']
+                },
+                '🌌': {
+                    common: ['Galaxy', 'Stars', 'Space', 'Cosmos'],
+                    uncommon: ['Milky Way', 'Star Cluster', 'Deep Space', 'Great Cosmos'],
+                    rare: ['Spiral Galaxy', 'Star Empire', 'Void Space', 'Infinite Cosmos'],
+                    epic: ['Andromeda', 'Super Galaxy', 'Universe Space', 'Eternal Cosmos'],
+                    legendary: ['Milky Way Heart', 'Galactic Core', 'Universe Center', 'Cosmic Soul'],
+                    ancient: ['First Galaxy', 'Primordial Stars', 'Dawn Space', 'Origin Cosmos'],
+                    extreme: ['Reality Galaxy', 'Dimensional Stars', 'Void Space', 'Cosmic Everything'],
+                    mythic: ['Universal Galaxy', 'Infinite Stars', 'Creation\'s Space', 'Eternal Cosmos'],
+                    honorable: ['Sacred Galaxy', 'Holy Stars', 'Divine Space', 'Blessed Cosmos'],
+                    'master-class': ['Supreme Galaxy', 'Perfect Stars', 'Ultimate Space', 'Absolute Cosmos'],
+                    insane: ['Beyond Universe', 'Impossible Galaxy', 'The Infinite Expanse', 'Pure Existence'],
+                    victorious: ['Never Ending', 'Eternal Galaxy', 'Endless Stars', 'Supreme Cosmos']
+                },
+                '🎭': {
+                    common: ['Mask', 'Theater', 'Drama', 'Comedy'],
+                    uncommon: ['Stage Mask', 'Grand Theater', 'Epic Drama', 'Great Comedy'],
+                    rare: ['Master Mask', 'Royal Theater', 'Divine Drama', 'Perfect Comedy'],
+                    epic: ['Legendary Mask', 'Eternal Theater', 'Supreme Drama', 'Ultimate Comedy'],
+                    legendary: ['Greek Theater', 'Broadway Star', 'Drama God', 'Comedy King'],
+                    ancient: ['First Performance', 'Primordial Theater', 'Dawn Drama', 'Origin Comedy'],
+                    extreme: ['Reality Theater', 'Dimensional Drama', 'Void Performance', 'Cosmic Comedy'],
+                    mythic: ['Universal Theater', 'Infinite Drama', 'Creation\'s Performance', 'Eternal Comedy'],
+                    honorable: ['Sacred Theater', 'Holy Drama', 'Divine Performance', 'Blessed Comedy'],
+                    'master-class': ['Supreme Theater', 'Perfect Drama', 'Ultimate Performance', 'Absolute Comedy'],
+                    insane: ['Beyond Acting', 'Impossible Theater', 'The Eternal Play', 'Pure Performance'],
+                    victorious: ['Never Ended', 'Eternal Theater', 'Endless Drama', 'Supreme Comedy']
+                },
+                '♾️': {
+                    common: ['Infinity', 'Forever', 'Endless', 'Eternal'],
+                    uncommon: ['Great Infinity', 'True Forever', 'Pure Endless', 'Real Eternal'],
+                    rare: ['Master Infinity', 'Perfect Forever', 'Supreme Endless', 'Divine Eternal'],
+                    epic: ['Legendary Infinity', 'Ultimate Forever', 'God Endless', 'Absolute Eternal'],
+                    legendary: ['Infinity Itself', 'Forever Incarnate', 'Endless Eternity', 'Eternal Infinity'],
+                    ancient: ['First Infinity', 'Primordial Forever', 'Dawn Endless', 'Origin Eternal'],
+                    extreme: ['Reality Infinity', 'Dimensional Forever', 'Void Endless', 'Cosmic Eternal'],
+                    mythic: ['Universal Infinity', 'Infinite Forever', 'Creation\'s Endless', 'Eternal Infinity'],
+                    honorable: ['Sacred Infinity', 'Holy Forever', 'Divine Endless', 'Blessed Eternal'],
+                    'master-class': ['Supreme Infinity', 'Perfect Forever', 'Ultimate Endless', 'Absolute Eternal'],
+                    insane: ['Beyond Infinity', 'Impossible Forever', 'The Unknowable Endless', 'Pure Eternity'],
+                    victorious: ['Never Ending', 'Eternal Infinity', 'Endless Forever', 'Supreme Eternity']
+                }
+            }
         };
 
         // Fill in default names if specific names aren't found
@@ -3900,9 +4398,9 @@
             const content = document.getElementById('modalContent');
             let specialEffects = '';
             
-            // Rarity-specific effects
-            if (rarity === 'supreme' || rarity === 'divine') {
-                // Light beams for supreme/divine
+            // Rarity-specific effects for highest tier
+            if (rarity === 'victorious' || rarity === 'insane') {
+                // Light beams for top rarities
                 specialEffects = `
                     <div class="light-beam" style="left: 30%; animation-delay: 0s;"></div>
                     <div class="light-beam" style="left: 50%; animation-delay: 0.3s;"></div>
@@ -3910,16 +4408,14 @@
                 `;
             }
             
-            if (['mythic', 'honorable', 'master-class', 'insane', 'victorious', 'divine', 'supreme'].includes(rarity)) {
+            if (['mythic', 'honorable', 'master-class', 'insane', 'victorious'].includes(rarity)) {
                 // Spiral particles for high rarities
                 const spiralColors = {
-                    'mythic': '#FF1493',
-                    'honorable': '#00FFFF',
-                    'master-class': '#FF4500',
-                    'insane': '#9370DB',
-                    'victorious': '#FFD700',
-                    'divine': '#FFFFFF',
-                    'supreme': '#FFD700'
+                    'mythic': '#00ffff',
+                    'honorable': '#ffd700',
+                    'master-class': '#ff69b4',
+                    'insane': '#8b00ff',
+                    'victorious': '#ffffff'
                 };
                 
                 for (let i = 0; i < 8; i++) {
@@ -3953,7 +4449,7 @@
             }
             
             content.innerHTML = `
-                <div class="character-reveal-container ${rarity === 'supreme' ? 'shake-effect' : ''}">
+                <div class="character-reveal-container ${rarity === 'victorious' ? 'shake-effect' : ''}">
                     <div class="reveal-bg-glow" style="background: ${rarityData.color};"></div>
                     ${specialEffects}
                     <div class="rarity-particles">
