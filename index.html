@@ -2788,6 +2788,11 @@
             gameState.happyHourActive = savedState.happyHourActive || false;
             gameState.happyHourExpires = savedState.happyHourExpires || null;
             gameState.happyHourLastPurchase = savedState.happyHourLastPurchase || null;
+            gameState.dailyCoinsEarned = savedState.dailyCoinsEarned || 0;
+            gameState.lastCoinResetDate = savedState.lastCoinResetDate || new Date().toDateString();
+            
+            // Check and reset daily coins if needed
+            checkAndResetDailyCoins();
             
             // Check if Happy Hour has expired
             if (gameState.happyHourActive && gameState.happyHourExpires) {
@@ -2998,8 +3003,60 @@
             worldExplorations: {}, // World exploration data {worldName: {resources, rescuedCharacters, homes, etc}}
             happyHourActive: false,
             happyHourExpires: null,
-            happyHourLastPurchase: null // Timestamp of last purchase (for daily limit)
+            happyHourLastPurchase: null, // Timestamp of last purchase (for daily limit)
+            dailyCoinsEarned: 0, // Coins earned today
+            lastCoinResetDate: new Date().toDateString() // Date string for daily reset
         };
+
+        // Daily coin limit system
+        const DAILY_COIN_LIMIT = 1000; // Maximum coins you can earn per day (reduced for balance)
+
+        function checkAndResetDailyCoins() {
+            const today = new Date().toDateString();
+            
+            // Initialize if doesn't exist (for old save files)
+            if (!gameState.lastCoinResetDate) {
+                gameState.lastCoinResetDate = today;
+                gameState.dailyCoinsEarned = 0;
+            }
+            
+            // Reset if it's a new day
+            if (gameState.lastCoinResetDate !== today) {
+                gameState.dailyCoinsEarned = 0;
+                gameState.lastCoinResetDate = today;
+                showInfo('🌅 New day! Daily coin limit reset!', 3000);
+            }
+        }
+
+        function awardCoins(amount, source = 'battle') {
+            // Check and reset daily limit if needed
+            checkAndResetDailyCoins();
+            
+            // Check if at daily limit
+            if (gameState.dailyCoinsEarned >= DAILY_COIN_LIMIT) {
+                showWarning(`💰 Daily coin limit reached! (${DAILY_COIN_LIMIT} coins/day)\nCome back tomorrow for more!`, 5000);
+                return 0; // No coins awarded
+            }
+            
+            // Calculate how many coins can actually be awarded
+            const remainingLimit = DAILY_COIN_LIMIT - gameState.dailyCoinsEarned;
+            const coinsToAward = Math.min(amount, remainingLimit);
+            
+            // Award coins
+            gameState.coins += coinsToAward;
+            gameState.dailyCoinsEarned += coinsToAward;
+            
+            // Show warning if hitting limit
+            if (coinsToAward < amount) {
+                showWarning(`💰 Daily limit! Only ${coinsToAward} coins awarded (${gameState.dailyCoinsEarned}/${DAILY_COIN_LIMIT} today)`, 4000);
+            } else if (gameState.dailyCoinsEarned >= DAILY_COIN_LIMIT * 0.8) {
+                // Warn when getting close to limit (80%)
+                showInfo(`💰 Daily progress: ${gameState.dailyCoinsEarned}/${DAILY_COIN_LIMIT} coins earned today`, 3000);
+            }
+            
+            saveGameState();
+            return coinsToAward;
+        }
 
         // Rarities with drop rates
         const rarities = [
@@ -5760,25 +5817,25 @@
             const champion = finalMatch.winner;
             
             if (champion.isPlayer) {
-                // Player won the tournament!
-                let coinsEarned, starsEarned, winsEarned, expEarned, title, description;
+                // Player won the tournament! (REDUCED REWARDS)
+                let baseCoins, starsEarned, winsEarned, expEarned, title, description;
                 
                 if (tournament.type === 'latrixhole') {
-                    coinsEarned = 25000;
+                    baseCoins = 250; // Further reduced from 500
                     starsEarned = 500;
                     winsEarned = 8;
                     expEarned = 2000;
                     title = '🌀 LATRIXHOLE CHAMPION!';
                     description = 'You conquered 256 fighters and mastered character rotation!';
                 } else if (tournament.type === 'hopeone') {
-                    coinsEarned = 10000;
+                    baseCoins = 100; // Further reduced from 200
                     starsEarned = 200;
                     winsEarned = 4;
                     expEarned = 800;
                     title = '💎 HOPE ONE CHAMPION!';
                     description = 'You proved your skill in the ultimate equalizer tournament!';
                 } else { // 32er
-                    coinsEarned = 5000;
+                    baseCoins = 50; // Further reduced from 100
                     starsEarned = 100;
                     winsEarned = 5;
                     expEarned = 500;
@@ -5786,7 +5843,7 @@
                     description = 'You defeated all 31 opponents and claimed victory!';
                 }
                 
-                gameState.coins += coinsEarned;
+                const coinsEarned = awardCoins(baseCoins, 'tournament'); // Use daily limit system
                 gameState.battleStars += starsEarned;
                 
                 const char = gameState.characters.find(c => c.id === gameState.selectedCharacter.id);
@@ -6264,14 +6321,14 @@
             resultsPage.className = 'battle-screen active';
             
             if (playerWon) {
-                // Calculate rewards
+                // Calculate rewards (REDUCED AMOUNTS)
                 const opponentRarityIndex = rarities.findIndex(r => r.name === battle.opponent.rarity);
                 const starsEarned = Math.max(1, Math.floor(opponentRarityIndex / 2) + 1);
-                const coinsEarned = Math.floor(Math.random() * 50) + 20 + (opponentRarityIndex * 10);
+                const baseCoins = Math.floor(Math.random() * 5) + 2 + opponentRarityIndex; // Further reduced: 2-7 base + rarity bonus
                 const expEarned = Math.floor(Math.random() * 30) + 20 + (opponentRarityIndex * 5);
                 
                 gameState.wins++;
-                gameState.coins += coinsEarned;
+                const coinsEarned = awardCoins(baseCoins, 'quick battle'); // Use daily limit system
                 
                 const char = gameState.characters.find(c => c.id === gameState.selectedCharacter.id);
                 char.wins++;
@@ -8486,11 +8543,12 @@
             const playerWon = winner.isPlayer;
             
             const totalPlayers = tournament.participants.length;
-            const coinsEarned = playerWon ? totalPlayers * 200 : 0;
+            const baseCoins = playerWon ? totalPlayers * 2 : 0; // Further reduced from totalPlayers * 5
             const starsEarned = playerWon ? totalPlayers * 5 : 0;
             
+            let coinsEarned = 0;
             if (playerWon) {
-                gameState.coins += coinsEarned;
+                coinsEarned = awardCoins(baseCoins, 'custom tournament'); // Use daily limit system
                 gameState.battleStars += starsEarned;
                 
                 const char = gameState.characters.find(c => c.id === selectedCustomChar.id);
@@ -8554,16 +8612,16 @@
         let climbKeys = {};
         
         const climbLevels = [
-            { level: 1, name: "Starter Steps", reward: { coins: 100, stars: 10 }, height: 15 },
-            { level: 2, name: "Block Tower", reward: { coins: 200, stars: 15 }, height: 20 },
-            { level: 3, name: "Platform Paradise", reward: { coins: 300, stars: 20 }, height: 25 },
-            { level: 4, name: "Jump Challenge", reward: { coins: 400, stars: 30 }, height: 30 },
-            { level: 5, name: "Sky Blocks", reward: { coins: 500, stars: 40 }, height: 35 },
-            { level: 6, name: "Moving Madness", reward: { coins: 750, stars: 50 }, height: 40 },
-            { level: 7, name: "Narrow Paths", reward: { coins: 1000, stars: 70 }, height: 45 },
-            { level: 8, name: "Expert Climb", reward: { coins: 1500, stars: 100 }, height: 50 },
-            { level: 9, name: "Master's Trial", reward: { coins: 2500, stars: 150 }, height: 60 },
-            { level: 10, name: "Summit Peak", reward: { coins: 5000, stars: 300 }, height: 70 }
+            { level: 1, name: "Starter Steps", reward: { coins: 5, stars: 10 }, height: 15 },
+            { level: 2, name: "Block Tower", reward: { coins: 8, stars: 15 }, height: 20 },
+            { level: 3, name: "Platform Paradise", reward: { coins: 10, stars: 20 }, height: 25 },
+            { level: 4, name: "Jump Challenge", reward: { coins: 15, stars: 30 }, height: 30 },
+            { level: 5, name: "Sky Blocks", reward: { coins: 20, stars: 40 }, height: 35 },
+            { level: 6, name: "Moving Madness", reward: { coins: 25, stars: 50 }, height: 40 },
+            { level: 7, name: "Narrow Paths", reward: { coins: 35, stars: 70 }, height: 45 },
+            { level: 8, name: "Expert Climb", reward: { coins: 50, stars: 100 }, height: 50 },
+            { level: 9, name: "Master's Trial", reward: { coins: 75, stars: 150 }, height: 60 },
+            { level: 10, name: "Summit Peak", reward: { coins: 125, stars: 300 }, height: 70 }
         ];
 
         function renderPetClimb() {
@@ -9024,8 +9082,8 @@
         }
 
         function climbWin(levelData) {
-            // Award rewards
-            gameState.coins += levelData.reward.coins;
+            // Award rewards using daily limit system
+            const coinsAwarded = awardCoins(levelData.reward.coins, 'pet climb');
             gameState.battleStars += levelData.reward.stars;
             
             // Give XP to character
@@ -9149,7 +9207,12 @@
             const winsEl = document.getElementById('winsCount');
             const worldsEl = document.getElementById('worldsUnlocked');
             
-            if (coinsEl) coinsEl.textContent = gameState.coins;
+            // Update coins with daily progress
+            if (coinsEl) {
+                checkAndResetDailyCoins(); // Make sure we're using current day
+                const dailyProgress = `${gameState.dailyCoinsEarned}/${DAILY_COIN_LIMIT}`;
+                coinsEl.innerHTML = `${gameState.coins} <span style="font-size: 0.7em; opacity: 0.8;">(${dailyProgress} today)</span>`;
+            }
             if (totalCharsEl) totalCharsEl.textContent = gameState.characters.length;
             if (winsEl) winsEl.textContent = gameState.wins;
             if (worldsEl) worldsEl.textContent = gameState.unlockedWorlds.length;
